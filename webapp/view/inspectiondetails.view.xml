@@ -1,0 +1,231 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.inspectiondetails"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page title="Result Recording"  showNavButton="true" navButtonPress="onnav">
+				<content>
+					<IconTabBar select="onSelectTab" class="sapUiResponsiveContentPadding" id="InspectionDetailTabHeader" headerBackgroundDesign="Translucent">
+						<items>
+							<IconTabFilter iconColor="Default" text="Inspection Detail" key="detail"/>
+							<!--<IconTabSeparator/>-->
+							<IconTabFilter iconColor="Default" text="Operation" key="operation"/>
+							<!--<IconTabSeparator/>-->
+							<!--<IconTabFilter iconColor="Default" text="Result Records" key="result"/>-->
+						</items>
+						<content>
+							<HBox width="100%" justifyContent="Center">
+								<Text text="Inspection Lot Number : {insdetailmodel>/Insplot}"/>
+							</HBox>
+							<VBox height="50%" width="100%" justifyContent="Center">
+								<HBox justifyContent="Center" width="100%">
+									<Text text="- - - - -"/>
+								</HBox>
+								<HBox><Text text=""/></HBox>
+								<HBox><Text text=""/></HBox>
+							</VBox>
+							<VBox justifyContent="SpaceAround" id="insplotdetailsection" width="100%" visible="true">
+								<HBox justifyContent="SpaceAround" width="100%">
+									<VBox width="50%">
+										<Text text="General Data" class="detailpageheading"/>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Material"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/Material}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Material Description"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/TxtInspObject}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Object Number"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/ObjectNo}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Type"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/InspType}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Starts on"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/InspectionStartsOnDate}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Ends on"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/InspectionEndsOnDate}"/></HBox>
+										</HBox>
+									</VBox>
+									<VBox width="50%">
+										<Text text="Task List Data" class="detailpageheading"/>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Plant"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/Plant}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Task List Type"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/TaskListType}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Task List Usage"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/TaskListUsage}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Task List Number"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/TaskListNumber}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Task List Valid From"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/TaskListValidFromDate}"/></HBox>
+										</HBox>
+									</VBox>
+								</HBox>
+								<HBox><Text text=""/></HBox>
+								<HBox><Text text=""/></HBox>
+								<HBox><Text text=""/></HBox>
+								<HBox justifyContent="SpaceAround" width="100%">
+									<VBox width="50%">
+										<Text text="Stock Data" class="detailpageheading"/>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Plant"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/Plant}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspectionlot Size"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/InsplotSize}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Sample Size"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/SampleSize}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspectionlot Base Unit of Measure"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insdetailmodel>/InsplotBaseUom}"/></HBox>
+										</HBox>
+									</VBox>
+									<VBox width="50%"></VBox>
+								</HBox>
+							</VBox>
+							<VBox justifyContent="SpaceAround" id="insplotoperationsection" width="100%" visible="false">
+								<VBox height="50%" width="100%" justifyContent="Center" visible="{=${insopertmodel>/Insplot} === '000000000000' ? true:false}">
+									<HBox justifyContent="Center"><Text text="No operation available for Inspectionlot {insopertmodel>/Inspectionlot}" class="operationnotavailable"/></HBox>
+									<HBox><Text text=""/></HBox>
+								</VBox>
+								<HBox justifyContent="SpaceAround" width="100%" visible="{=${insopertmodel>/Insplot} === '000000000000' ? false:true}">
+									<VBox width="50%">
+										<Text text="Inspectionlot Characteristics" class="detailpageheading"/>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Operation"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Inspchar}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Samples Number"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/SamplesNo}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Characteristic Description"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/CharDescr}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Characteristic Weighting"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ChWgtCod}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Confirmation Number"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ConfirmNo}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Scope"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Scope}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Grid"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Grid}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Master Characteristic"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/MstrChar}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Version Number of Master Inspection Characteristic"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/VmstrChar}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Plant of Master Inspection Characteristic"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/PmstrChar}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Unit of Sample"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/SmplUnitt}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Weighting Characteristic"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ChWgtTxt}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Characteristic Weighting Code"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ChWgtCod}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Characteristic Weighting Factor"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ChWgtFac}"/></HBox>
+										</HBox>
+									</VBox>
+									<VBox width="50%">
+										<Text text="Inspection Result Characteristics" class="detailpageheading"/>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Operation"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Inspoper}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Valid Values"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ValidVals}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Start Date"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/StartDate}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Inspection Start Time"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/StartTime}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Status"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Status}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Valuation Type"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/ValnType}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Code Group"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/CodeGrp1}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Code"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Code1}"/></HBox>
+										</HBox>
+									</VBox>
+								</HBox>
+							</VBox>
+							<VBox justifyContent="SpaceAround" id="resultrecordssection" width="100%" visible="false">
+								<HBox justifyContent="SpaceAround" width="100%">
+									<VBox width="50%">
+										<Text text="Inspectionlot Characteristics" class="detailpageheading"/>
+									</VBox>
+									<VBox width="50%">
+										<Text text="Inspection Result Characteristics" class="detailpageheading"/>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Code"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Code1}"/></HBox>
+										</HBox>
+										<HBox width="100%">
+											<HBox width="50%" justifyContent="Start"><Text text="Code"/></HBox>
+											<HBox width="50%" justifyContent="Start"><Text text=": {insopertmodel>/Code1}"/></HBox>
+										</HBox>
+									</VBox>
+								</HBox>
+							</VBox>
+						</content>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

@@ -1,0 +1,65 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.shopproductyear"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page title="PRODUCTION ORDER BY YEAR">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://home" type="Transparent" press="onhome"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<SearchField width="240px" liveChange="onsearch"></SearchField>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<Select items="{path: '/Year'}" change="onChange" id="yearDropdown">
+						<core:ListItem id="plnmon" key="{yearkey}" text="{year}"/>
+					</Select>
+					<Table id="productorderlist" items="{/Productionorder}" growing="true" select="onrow" mode="SingleSelectMaster" growingThreshold="25"
+						visible="true">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Production order" level="H4"/>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column>
+								<Text text="Order number"></Text>
+							</Column>
+							<Column>
+								<Text text="Material"></Text>
+							</Column>
+							<Column>
+								<Text text="start Date"></Text>
+							</Column>
+							<Column>
+								<Text text="End Date"></Text>
+							</Column>
+							<Column>
+								<Text text="Plant"></Text>
+							</Column>
+							<Column>
+								<Text text="Target quatity"></Text>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{OrderNumber}"/>
+									<Text text="{MaterialText}"/>
+									<Text text="{ProductionStartDate}"/>
+									<Text text="{ProductionFinishDate}"/>
+									<Text text="{ProductionPlant}"/>
+									<Text text="{TargetQuantity}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

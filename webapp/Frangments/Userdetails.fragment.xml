@@ -1,0 +1,41 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.EHSMdashboard"
+xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	
+	
+	<Dialog title="User Details" class="wodialog">
+		<VBox width="100%" justifyContent="Center">
+			
+	
+			<HBox width="80%" >
+				<HBox width="40%" justifyContent="End">
+						<Text text="Name "></Text>
+				</HBox>
+				<HBox width="50%" justifyContent="Start">
+						<Text text= ": {/name}"></Text>
+				</HBox>
+			
+			</HBox>
+			<HBox width="80%" >
+				<HBox width="40%" justifyContent="End">
+						<Text text="ID "></Text>
+				</HBox>
+				<HBox width="50%" justifyContent="Start">
+						<Text text= ": {/id}"></Text>
+				</HBox>
+			
+			</HBox>
+			<HBox width="80%" >
+				<HBox width="40%" justifyContent="End">
+						<Text text="Plant "></Text>
+				</HBox>
+				<HBox width="50%" justifyContent="Start">
+						<Text text= ": {/plant}"></Text>
+				</HBox>
+				</HBox>
+			</VBox>
+		
+			
+		
+		<Button text="Close" press="oncloseuser" type="Reject"></Button>
+	</Dialog>
+	</core:FragmentDefinition>

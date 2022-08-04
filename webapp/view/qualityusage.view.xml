@@ -1,0 +1,67 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.qualityusage"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+				<Page title="Usage Decision List">
+				<content>
+						<tnt:ToolHeader>
+						<OverflowToolbar>
+							<Title text="Usage Decision" level="H4"/>
+						</OverflowToolbar>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px" priority="Low"/>
+							</layoutData>
+						</ToolbarSpacer>
+					</tnt:ToolHeader>
+					    <Table id="UDtable" mode="SingleSelectMaster" selectionChange="onUD" items="{UD>/}">
+                        <columns>
+                            <Column id="StockPlant">
+                                <Text text="Plant"/>
+                            </Column>
+                            <Column id="Insplot">
+                                <Text text="Inspection Lot"/>
+                            </Column>
+                            <Column id="Material">
+                                <Text text="Material"/>
+                            </Column>
+                            <Column id="SampleSize">
+                                <Text text="Sample Size"/>
+                            </Column>
+                            <Column id="QuantityAvailable">
+                                <Text text="Quantity Available"/>
+                            </Column>
+                            <Column id="QuantityActual">
+                                <Text text="Quantity Actual"/>
+                            </Column>
+                            <Column id="QuantityScrap">
+                                <Text text="Quantity Scrap"/>
+                            </Column>
+                            <Column id="QuantityUom">
+                                <Text text="Unit"/>
+                            </Column>
+                            <Column id="UsageDecisionStatus">
+                                <Text text="Usage Decision Status"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem vAlign="Middle">
+                                <cells>
+                                    <Text text="{UD>StockPlant}"/>
+                                    <Text text="{UD>Insplot}"/>
+                                    <Text text="{UD>Material}"/>
+                                    <Text text="{UD>SampleSize}"/>
+                                    <Text text="{UD>QuantityAvailable}"/>
+                                    <Text text="{UD>QuantityScrap}"/>
+                                    <Text text="{UD>QuantityActual}"/>
+                                     <Text text="{UD>QuantityUom}"/>
+                                    <Text text="{UD>UsageDecisionStatus}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

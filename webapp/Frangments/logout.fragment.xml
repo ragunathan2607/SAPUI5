@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.secondpage"
+xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	
+	
+	<Dialog title="Logout" class="wodialog">
+		<HBox>
+			<Text text="Are You Sure Want to Logout?"></Text>
+		</HBox>
+		
+		<HBox justifyContent="Center">
+			<Button text="Logout" press="onlogout"></Button>
+		<Button text="Cancel" press="oncancel"></Button>
+			
+		</HBox>
+		
+	</Dialog>
+	</core:FragmentDefinition>
+	

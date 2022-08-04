@@ -1,0 +1,61 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.secondpage"
+xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+<Dialog title="Details" class="wodialog">
+	<VBox class="notifrag">
+<HBox >
+	<Text text="User: {/CreatedBy} " textAlign="Center" />
+</HBox>	
+<HBox>
+	<Text text="Plant: {/Planplant} "/>
+</HBox>
+<HBox>
+		<Text text="Notification NO: {/Number} "/>
+</HBox>
+<HBox>
+		<Text text="status: {/SysStatus} "/>
+</HBox>
+	<HBox>
+			<Text text="Equiment description: {/Equidescr} "/>
+		</HBox>
+		<HBox>
+			<Text text="Functional location: {/Funcldescr} "/>
+		</HBox><HBox>
+			<Text text="Workcenter: {/WorkCntr} "/>
+		</HBox><HBox>
+			<Text text="center description: {/CntrDescr} "/>
+		</HBox><HBox>
+			<Text text="Equipment: {/Equipment} "/>
+		</HBox><HBox>
+			<Text text="Plangroup: {/Plangroup} "/>
+		</HBox><HBox>
+			<Text text="ShortText: {/ShortText} "/>
+		</HBox><HBox>
+			<Text text="Reportedby: {/Reportedby} "/>
+		</HBox><HBox>
+			<Text text="Order Id: {/Orderid} "/>
+		</HBox>
+		<HBox>
+			<Text text="Costcenter: {/Costcenter} "/>
+		</HBox><HBox>
+			<Text text="CreatedAt: {/CreatedAt} "/>
+		</HBox><HBox>
+			<Text text="center: {/PmWkctr} "/>
+		</HBox><HBox>
+			<Text text="country: {/Notiftmez} "/>
+		</HBox>
+	
+		
+	</VBox>
+		
+	
+	<HBox justifyContent="SpaceAround">
+		<Button text="close" press="onclose" ></Button>
+	</HBox>
+	
+	</Dialog>
+	
+	
+	
+	
+
+	</core:FragmentDefinition>

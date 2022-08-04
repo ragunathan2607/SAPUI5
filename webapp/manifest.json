@@ -1,0 +1,251 @@
+{
+	"_version": "1.7.0",
+	"sap.app": {
+		"id": "portalnew",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponent",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"ZPM_ODATA_RA_SRV": {
+				"uri": "/sap/opu/odata/sap/ZPM_ODATA_RA_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZPM_ODATA_RA_SRV/metadata.xml"
+				}
+			},
+			"ZPP_ODATA_RA_SRV": {
+				"uri": "/sap/opu/odata/sap/ZPP_ODATA_RA_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZPP_ODATA_RA_SRV/metadata.xml"
+				}
+			},
+			"ZEHSM_ODATA_RA_SRV": {
+				"uri": "/sap/opu/odata/sap/ZEHSM_ODATA_RA_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZEHSM_ODATA_RA_SRV/metadata.xml"
+				}
+			},
+			"ZQUALITY_ODATA_RA_SRV": {
+				"uri": "/sap/opu/odata/sap/ZQUALITY_ODATA_RA_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZQUALITY_ODATA_RA_SRV/metadata.xml"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "portalnew.view.landingpage",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {},
+				"sap.ushell": {},
+				"sap.collaboration": {},
+				"sap.ui.comp": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "portalnew.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewPath": "portalnew.view",
+				"viewType": "XML",
+				"targetAggregation": "pages"
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "landingpage",
+					"view": "landingpage",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "login",
+					"name": "loginpage",
+					"view": "loginpage",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "second",
+					"name": "secondpage",
+					"view": "secondpage",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "workorder",
+					"name": "workorder",
+					"view": "workorder",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "shoplogin",
+					"name": "shopfloor_login",
+					"view": "shopfloor_login",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Dashboard",
+					"name": "shopdashboard",
+					"view": "shopdashboard",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "productlistyear",
+					"name": "shopproductyear",
+					"view": "shopproductyear",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "productlistmonth",
+					"name": "shopproductmonth",
+					"view": "shopproductmonth",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "plannedlistyear",
+					"name": "shopplannedyear",
+					"view": "shopplannedyear",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "plannedlistmonth",
+					"name": "shopplannedmonth",
+					"view": "shopplannedmonth",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "EHSM login",
+					"name": "EHSMlogin",
+					"view": "EHSMlogin",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "EHSMDashboard",
+					"name": "EHSMdashboard",
+					"view": "EHSMdashboard",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Incident List",
+					"name": "EHSMincident",
+					"view": "EHSMincident",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Risk list",
+					"name": "EHSMrisk",
+					"view": "EHSMrisk",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Quality login",
+					"name": "qualitylogin",
+					"view": "qualitylogin",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Quality dashboard",
+					"name": "qualitydashboard",
+					"view": "qualitydashboard",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+					{
+					"pattern": "Usage Decision",
+					"name": "qualityusage",
+					"view": "qualityusage",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Inspectionlist",
+					"name": "inspectionlot",
+					"view": "inspectionlot",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"pattern": "Inspectiondetails",
+					"name": "inspectiondetails",
+					"view": "inspectiondetails",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				}
+			]
+		}
+	}
+}

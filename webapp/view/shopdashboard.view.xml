@@ -1,0 +1,33 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.shopdashboard"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page class="bggif">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://log" type="Transparent" press="onlogout2"></Button>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="10px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<text text="Dashboard" class="dash"></text>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<VBox class="sidbutn">
+						<Button text="Planned Order by Month" icon="sap-icon://order-status" press=".onmonth" type="Unstyled" class="navbut"/>
+						<Button text="Planned Order by Year" icon="sap-icon://order-status" press=".onyear" type="Unstyled" class="navbut"/>
+						<Button text="Production Order by Month" icon="sap-icon://factory" press=".onmonth1" type="Unstyled" class="navbut"/>
+						<Button text="Production Order by Year" icon="sap-icon://factory" press=".onyear1" type="Unstyled" class="navbut"/>
+						<Text text="ShopFloor Portal" class="navbut2"></Text>
+					</VBox>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

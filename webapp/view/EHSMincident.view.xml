@@ -1,0 +1,57 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.EHSMincident"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page title="Title">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://home" type="Transparent" press="onhome"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<SearchField width="240px" liveChange="onsearch"></SearchField>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<Table id="incidenttable" items="{/Incident}" growing="true" select="onrow" mode="SingleSelectMaster" growingThreshold="25" visible="true">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Incident list" level="H4"/>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column>
+								<Text text="Record number"></Text>
+							</Column>
+							<Column>
+								<Text text="Name"></Text>
+							</Column>
+							<Column>
+								<Text text="Event description"></Text>
+							</Column>
+							<Column>
+								<Text text="Plant Location"></Text>
+							</Column>
+							<Column>
+								<Text text="Date"></Text>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{Recn}"/>
+									<Text text="{Crnam}"/>
+									<Text text="{Evdesc}"/>
+									<Text text="{Acloc}"/>
+									<Text text="{Crdat}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="portalnew.controller.EHSMincident" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog title="Details" class="wodialog">
+		<VBox class="notifrag">
+			<HBox >
+				<Text text="Record number: {/RecordNo} "/>
+			</HBox>
+			<HBox >
+				<Text text="Valid from: {/Valfr} "/>
+			</HBox>
+			<HBox >
+				<Text text="Valide to: {/Valto} "/>
+			</HBox>
+			<HBox >
+				<Text text="User name: {/Updnam} "/>
+			</HBox>
+			<HBox >
+				<Text text="Created by: {/Crnam} "/>
+			</HBox>
+			<HBox >
+				<Text text="Plant: {/Iaplant} "/>
+			</HBox>
+			<HBox >
+				<Text text="Status: {/Iastatus} "/>
+			</HBox>
+			<HBox >
+				<Text text="Equipment number: {/Equnr} "/>
+			</HBox>
+			<HBox >
+				<Text text="equipment description: {/Eqdesc} "/>
+			</HBox>
+			<HBox >
+				<Text text="location: {/Aclocdesc} "/>
+			</HBox>
+			<HBox >
+				<Text text="event description: {/Evdesc} "/>
+			</HBox>
+			<HBox >
+				<Text text="TPL number: {/Tplnr} "/>
+			</HBox>
+			<HBox >
+				<Text text="Time of event: {/Evtime} "/>
+			</HBox>
+			<HBox >
+				<Text text="Recent work: {/Recntwah} "/>
+			</HBox>
+			<HBox >
+				<Text text="Control Flag: {/Cntrflg} "/>
+			</HBox>
+			<HBox >
+				<Text text="Fatal flag: {/Fatalflg} "/>
+			</HBox>
+			<HBox>
+				<Button text="close" press="onclose"></Button>
+			</HBox>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,57 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.workorder"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page title="Work Order">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://home" type="Transparent" press="onhome"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<SearchField width="240px" placeholder="Enter Order Id" liveChange="onsearch"></SearchField>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<Table id="workordertable" items="{/workorder}" growing="true" select="onrow" mode="SingleSelectMaster" growingThreshold="25" visible="true">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Workorder" level="H4"/>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column>
+								<Text text="Order ID"></Text>
+							</Column>
+							<Column>
+								<Text text="Work Center"></Text>
+							</Column>
+							<Column>
+								<Text text="Description"></Text>
+							</Column>
+							<Column>
+								<Text text="Equipment"></Text>
+							</Column>
+							<Column>
+								<Text text="Function Location"></Text>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{Orderid}"/>
+									<Text text="{WorkCntr}"/>
+									<Text text="{Description}"/>
+									<Text text="{Equidescr}"/>
+									<Text text="{Funcldescr}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

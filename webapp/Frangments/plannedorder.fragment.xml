@@ -1,0 +1,47 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="portalnew.controller.shopplannedmonth" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog title="Details" class="wodialog">
+		<VBox class="notifrag">
+			<HBox >
+				<Text text="Ordernumber: {/PlannedorderNum} "/>
+			</HBox>
+			<HBox >
+				<Text text="Plant: {/PlanPlant} "/>
+			</HBox>
+			<HBox>
+				<Text text="OrderType: {/OrderType} "/>
+			</HBox>
+			<HBox>
+				<Text text="Procurement Type: {/ProcurementType} "/>
+			</HBox>
+			<HBox>
+				<Text text="Total Quantity: {/TotalPlordQty} "/>
+			</HBox>
+			<HBox>
+				<Text text="Start Date: {/OrderStartDate} "/>
+			</HBox>
+			<HBox>
+				<Text text="Finish Date: {/OrderFinDate} "/>
+			</HBox>
+			<HBox>
+				<Text text="Order Open Date: {/PlanOpenDate} "/>
+			</HBox>
+			<HBox>
+				<Text text="Mrp Controller: {/MrpController} "/>
+			</HBox>
+			<HBox>
+				<Text text="Bom Usage: {/BomUsage} "/>
+			</HBox>
+			<HBox>
+				<Text text="Bom Status: {/BomStatus} "/>
+			</HBox>
+			<HBox>
+				<Text text="Time Of Action: {/TimeOfAction} "/>
+			</HBox>
+		</VBox>
+		<HBox>
+			<Button text="close" press="onclose"></Button>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>

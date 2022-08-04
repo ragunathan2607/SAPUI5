@@ -1,0 +1,52 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="portalnew.controller.shopproductmonth" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog title="Details" class="wodialog">
+		<VBox class="notifrag">
+		<HBox>
+			<Text text="User: {/EnteredBy} "/>
+		</HBox>
+		<HBox >
+			<Text text="Order Number: {/Number} " />
+		</HBox>
+		<HBox >
+			<Text text="Plant: {/ProductionPlant} "/>
+		</HBox>
+		<HBox>
+			<Text text="User: {/EnteredBy} "/>
+		</HBox>
+		<HBox>
+			<Text text="Operation Number: {/OperationNumber} "/>
+		</HBox>
+		<HBox>
+			<Text text="Material : {/MaterialText} "/>
+		</HBox>
+		<HBox>
+			<Text text="Material No : {/Material} "/>
+		</HBox>
+		<HBox>
+			<Text text="Description: {/Description} "/>
+		</HBox>
+		<HBox>
+			<Text text="Quantity: {/Quantity} "/>
+		</HBox>
+		<HBox>
+			<Text text="Target Quantity: {/TargetQuantity} "/>
+		</HBox><HBox>
+			<Text text="Start Date: {/StartDate} "/>
+		</HBox><HBox>
+			<Text text="Finish Date: {/ProductionFinishDate} "/>
+		</HBox>
+		<HBox>
+			<Text text="Mrp Controller: {/MrpController} "/>
+		</HBox><HBox>
+			<Text text="Work Center machine: {/WorkCenterText} "/>
+		</HBox><HBox>
+			<Text text="work center: {/WorkCenter} " />
+		</HBox>
+		</VBox>
+	<HBox>
+			<Button text="close" press="onclose"></Button>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>

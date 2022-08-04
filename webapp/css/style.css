@@ -1,0 +1,357 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 30px;
+    z-index: 1000;
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.55;
+    background-color: #000;
+}
+
+.image {
+    background-image: url("../images/Kaar-Logo-.png");
+    height: 10;
+    width: 20;
+}
+
+.sidbutn {
+    background-color: #394958;
+    width: 230px;
+    height: 93.3%;
+}
+
+.navbut .sapMBtnTransparent {
+    color: white;
+    border: none;
+}
+.navbut 
+{
+	cursor:pointer;
+	width:100%;
+}
+
+.navbut2 {
+    color: white;
+    font-size: 20px;
+    padding-left: 35px;
+    padding-top: 280px
+}
+
+
+
+
+.form {
+    background-color: white;
+    height: 760px;
+    width: 521px;
+    margin-left: 760px;
+    margin-top: -494px;
+}
+
+.logname {
+    color: black;
+    font-size: 40px;
+}
+
+.maintport {
+    color: black;
+    font-size: 45px;
+    margin-left: 150px;
+}
+
+.shopport {
+    color: black;
+    font-size: 45px;
+    margin-left: 150px;
+}
+
+.EHSport {
+    color: black;
+    font-size: 45px;
+    margin-left: 220px;
+}
+
+.QUAport {
+    color: black;
+    font-size: 45px;
+    margin-left: 220px;
+}
+
+.sapUiForm.sapUiFormEdit .sapUiFormElementLbl>.sapMLabel {
+    color: #9d0102;
+    font-size: 20px;
+    font-weight: 700
+}
+
+.loginviewbg {
+    background-color: blanchedalmond;
+}
+
+.loginviewbgehs {
+    background-color: #6da1cf;
+}
+
+.loginviewbgshop {
+    background-color: #91ecdd;
+}
+
+.loginviewbgqual {
+    background-color: #cc404099;
+}
+
+.head {
+    padding: 500px 100px 0 10px;
+    background-color: blue;
+    top: 0;
+    position: relative;
+}
+
+.header .menu {
+    display: flex;
+    align-content: center;
+    margin-bottom: 0px;
+    padding: 0px 200px 0px 450px;
+    padding-left: 276px;
+    list-style: none;
+}
+
+.logbtn .sapMBtnInner {
+    color: white;
+    background-color: #111;
+    border: black;
+    font-size: 20px;
+}
+
+.bt .sapMBtnInner {
+    color: white;
+    background-color: #111;
+    border: black;
+}
+
+.sapUiFormResGrid>div {
+    padding: 9rem 0.75rem;
+    box-sizing: border-box;
+    padding-bottom: 50px;
+}
+
+.kaar {
+    background-color: white;
+    padding: 30px 330px 30px 330px;
+    margin-top: 50px;
+    position: relative;
+    display: block;
+    font-size: 60px;
+    color: #9e1915;
+    font-weight: 1000;
+    font-family: arial;
+}
+
+.tablenoti .sapMListUl {
+    border: 6px solid;
+}
+
+.notifrag {
+    padding-left: 10px;
+}
+
+.bggif {
+    background-image: url("../images/shopfloor.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.ehsmdash {
+    background-image: url("../images/ehsm.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.qualitydash{
+	background-image: url("../images/quality2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.sapMListBGTranslucent .sapMLIB[data-mydata="OSNO"] {
+    background-color: #a6ffb9;
+}
+
+.sapMListBGTranslucent .sapMLIB[data-mydata="NOPR"] {
+    background-color: #a6ffb9;
+}
+.sapMListBGTranslucent .sapMLIB[data-mydata="NOPR OSTS"] {
+    background-color: #a6ffb9;
+}
+.sapMListBGTranslucent .sapMLIB[data-mydata="NOPR ORAS OSTS"] {
+    background-color: #a6ffb9;
+}
+.sapMListBGTranslucent .sapMLIB[data-mydata="NOPR ORAS"] {
+    background-color: #f99090
+}
+
+.bt {
+    background: transparent;
+    color: white;
+    letter-spacing: 2px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.whole {
+    display: flex;
+    padding: 10px;
+    width: max-content;
+    position: relative;
+    left: 0;
+}
+
+.container {
+    margin: auto;
+}
+
+.lobtn .sapMBtnInner {
+    font-size: 20px;
+}
+
+.logo {
+    border-radius: 20px;
+    display: inline-flex;
+    position: relative;
+    align-items: flex-end;
+    margin-left: 200px
+}
+
+.img {
+    padding: 10px;
+}
+
+.card {
+    height: 340px;
+    width: 310px;
+    background-color: #efefef;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    position: relative;
+    margin: auto;
+    display: inline-block;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 8px;
+    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+}
+
+.desc {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 160px;
+}
+
+.text {
+    color: #3e5280;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    margin: 5px 0;
+}
+
+.lobtn2 .sapMBtnInner {
+    margin-left: 50px;
+    font-size: 20px;
+}
+
+.logbtn {
+    width: 80%;
+    padding: 15px 0;
+    position: absolute;
+    left: 40%;
+    top: 240px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.card-img img {
+    height: 86%;
+    border-radius: 50%;
+    margin-left: 1%;
+    margin-top: 7%;
+}
+
+.card-img2 img {
+    height: 86%;
+    border-radius: 50%;
+    margin-left: -30%;
+    margin-top: 7%;
+}
+
+.card-img3 img {
+    height: 86%;
+    border-radius: 50%;
+    /*margin-left: -30%;*/
+    margin-top: 7%;
+}
+
+.card-img4 img {
+    height: 86%;
+    border-radius: 50%;
+    margin-left: 10%;
+    margin-top: 7%;
+}
+
+.card-img {
+    height: 120px;
+    width: 120px;
+    background-color: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 50%;
+    position: absolute;
+    margin: 30px auto 20px auto;
+    left: 0;
+    right: 0;
+}
+
+.card-img3 {
+    height: 120px;
+    width: 120px;
+    background-color: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 50%;
+    position: absolute;
+    margin: 30px auto 20px auto;
+    left: 0;
+    right: 0;
+}
+
+.card-img4 {
+    height: 120px;
+    width: 120px;
+    background-color: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 50%;
+    position: absolute;
+    margin: 30px auto 20px auto;
+    left: 0;
+    right: 0;
+}
+
+.card-img2 {
+    height: 120px;
+    width: 120px;
+    background-color: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 50%;
+    position: absolute;
+    margin: 30px auto 20px auto;
+    left: 0;
+    right: 0;
+}

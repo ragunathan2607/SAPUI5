@@ -1,0 +1,57 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="portalnew.controller.EHSMrisk" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog title="Details" class="wodialog">
+		<VBox class="notifrag">
+			<HBox >
+				<Text text="Record number: {/RecordNo} "/>
+			</HBox>
+			<HBox >
+				<Text text="Valid from: {/Valfr} "/>
+			</HBox>
+			<HBox >
+				<Text text="Valide to: {/Valto} "/>
+			</HBox>
+			<HBox >
+				<Text text="User name: {/Updnam} "/>
+			</HBox>
+			<HBox >
+				<Text text="Created by: {/Crnam} "/>
+			</HBox>
+			<HBox >
+				<Text text="Account number: {/Actn} "/>
+			</HBox>
+			<HBox >
+				<Text text="Created date: {/Crdat} "/>
+			</HBox>
+			<HBox >
+				<Text text="Object number: {/Objnr} "/>
+			</HBox>
+			
+			<HBox >
+				<Text text="Equipment Id: {/Epid} "/>
+			</HBox>
+			<HBox >
+				<Text text="Type: {/Eptype} "/>
+			</HBox>
+			<HBox >
+				<Text text="Status: {/Erstatus} "/>
+			</HBox>
+			<HBox >
+				<Text text="Risk asset number: {/Riskassetnum} "/>
+			</HBox>
+			<HBox >
+				<Text text="Recent work: {/Recntwah} "/>
+			</HBox>
+			<HBox >
+				<Text text="Rating: {/Ratingcat} "/>
+			</HBox>
+			<HBox >
+				<Text text="Severe: {/Severe} "/>
+			</HBox>
+			<HBox>
+				<Button text="close" press="onclose"></Button>
+			</HBox>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

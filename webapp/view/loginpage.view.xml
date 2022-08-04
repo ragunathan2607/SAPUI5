@@ -1,0 +1,32 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.loginpage"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page class="loginviewbg" showNavButton="true" navButtonPress="onnav">
+				<html:div class="logo">
+					<html:img src="/webapp/images/Kaar-Logo-.png" height="300px" width="300px"></html:img>
+				</html:div>
+				<html:h1 class="maintport">Maintenance portal</html:h1>
+				<content>
+					<html:div class="form">
+						<f:SimpleForm id="SimpleFormToolbar" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false" ariaLabelledBy="Title1">
+							<html:h1 class="logname">Login...</html:h1>
+							<f:content>
+								<Label text="Employee ID"/>
+								<Input type="Text" id="empid"/>
+								<Label text="Password"/>
+								<Input type="Password" id="pswrd"/>
+							</f:content>
+						</f:SimpleForm>
+						<FlexBox justifyContent="Center">
+							<Button text="Login" class="lobtn" press="onlog"/>
+							<Button text="clear" class="lobtn2" press="onclear"/>
+						</FlexBox>
+					</html:div>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

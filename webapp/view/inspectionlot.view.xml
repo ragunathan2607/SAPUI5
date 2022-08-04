@@ -1,0 +1,58 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.inspectionlot"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page title="Inspection Lot">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://home" type="Transparent" press="onhome"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<SearchField width="240px" liveChange="onsearch"></SearchField>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<Table id="inspectiontable" items="{/inspection}" growing="true" select="onrow" mode="SingleSelectMaster" growingThreshold="25"
+						visible="true">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Inspection Lot" level="H4"/>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column>
+								<Text text="InspectionLot number"></Text>
+							</Column>
+							<Column>
+								<Text text="Material"></Text>
+							</Column>
+							<Column>
+								<Text text="Material description"></Text>
+							</Column>
+							<Column>
+								<Text text="Date of inspection"></Text>
+							</Column>
+							<Column>
+								<Text text="Usage decision"></Text>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{Insplot}"/>
+									<Text text="{Material}"/>
+									<Text text="{TxtMat}"/>
+									<Text text="{CreatDat}"/>
+									<Text text="{UsageDecisionStatus}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

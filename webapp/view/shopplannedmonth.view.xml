@@ -1,0 +1,61 @@
+<mvc:View controllerName="portalnew.controller.shopplannedmonth" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:tnt="sap.tnt"
+	xmlns:core="sap.ui.core">
+	<App>
+		<pages>
+			<Page title="PLANNED ORDER BY MONTH">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://home" type="Transparent" press="onhome"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<SearchField width="240px" liveChange="onsearch"></SearchField>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<Select items="{path: '/Month'}" change="onChange" id="MonthDropdown">
+						<core:ListItem id="plnmon" key="{MonthNo}" text="{MonthName}"/>
+					</Select>
+					<Table id="plannedordermon" items="{/Plannedorder}" growing="true" select="onrow" mode="SingleSelectMaster" growingThreshold="25"
+						visible="true">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Planned order" level="H4"/>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column>
+								<Text text="Order number"></Text>
+							</Column>
+							<Column>
+								<Text text="Material"></Text>
+							</Column>
+							<Column>
+								<Text text="Open Date"></Text>
+							</Column>
+							<Column>
+								<Text text="Plant"></Text>
+							</Column>
+							<Column>
+								<Text text="Order quantity"></Text>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{PlannedorderNum}"/>
+									<Text text="{Material}"/>
+									<Text text="{PlanOpenDate}"/>
+									<Text text="{PlanPlant}"/>
+									<Text text="{TotalPlordQty}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

@@ -1,0 +1,76 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.secondpage"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page title="Dashboard">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://log" type="Transparent" press="onlog5"></Button>
+						<Button text="Notifications" type="Transparent" press="onnotify">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="Low"/>
+							</layoutData>
+						</Button>
+						<Button text="Workorder" type="Transparent" press="onwrkorder"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px" priority="Low"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<SearchField width="240px" placeholder="Enter Notification No" liveChange="onsearch"></SearchField>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+					<IconTabBar id="idIconTabBar" select=".onFilterSelect" class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter showAll="true" text="Notification Status" key="All"/>
+							<IconTabSeparator/>
+							<IconTabFilter icon="sap-icon://accept" iconColor="Positive" text="Accepted" key="Ok"/>
+							<!--<IconTabFilter icon="sap-icon://compare" iconColor="Critical" text="Pending" key="pend"/>-->
+							<IconTabFilter icon="sap-icon://decline" iconColor="Negative" text="Not Accepted" key="notok"/>
+						</items>
+					</IconTabBar>
+					<Table id="notificationtable" items="{/notification}" select="onrow" growing="true" mode="SingleSelectMaster" growingThreshold="25"
+						visible="true" class="tablenoti">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Notifications" level="H4"/>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column>
+								<Text text="Notification NO"></Text>
+							</Column>
+							<Column>
+								<Text text="DESCRIPTION"></Text>
+							</Column>
+							<Column>
+								<Text text="NOTIFICATION DATE"></Text>
+							</Column>
+							<Column>
+								<Text text="EQUIPMENT"></Text>
+							</Column>
+							<Column>
+								<Text text="EQUIP DESCRIPTION"></Text>
+							</Column>
+						</columns>
+						<items >
+							<ColumnListItem >
+								<customData>
+									<core:CustomData key="mydata" value="{SStatus}" writeToDom="true"></core:CustomData>
+								</customData>
+								<cells >
+									<Text text="{Notificat}"/>
+									<Text text="{Descript}"/>
+									<Text text="{Notifdate}"/>
+									<Text text="{Equipment}"/>
+									<Text text="{Equidescr}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

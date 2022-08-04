@@ -1,0 +1,27 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.qualitydashboard"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages>
+			<Page title="Dashboard" class="qualitydash">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://log" type="Transparent" press="onlogout2">
+							<layoutData>
+								<OverflowToolbarLayoutData/>
+							</layoutData>
+						</Button>
+						<Button text="Inspection Lot" type="Transparent" press="oninspect"></Button>
+						<Button text="Usage Decision" type="Transparent" press="onusage"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px" priority="Low"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

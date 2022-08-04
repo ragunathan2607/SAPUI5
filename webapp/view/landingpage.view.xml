@@ -1,0 +1,68 @@
+<mvc:View controllerName="portalnew.controller.landingpage" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" xmlns="sap.m">
+	<App id="app">
+		<pages>
+			<Page>
+				<content>
+					<html:div class="header">
+						<html:ul class="menu">
+							<html:li>
+								<Text text="Accelerate Your SAP Digital Transformation with the World’s Best Pure-Play SAP Partner" class="bt"></Text>
+							</html:li>
+						</html:ul>
+					</html:div>
+					<html:img class="image"></html:img>
+					<html:a class="kaar">Kaar Technologies</html:a>
+					<html:div class="whole">
+						<html:div class="container">
+							<html:div class="card">
+								<html:div class="card-img">
+									<html:img src="/webapp/images/maint.jpg"/>
+								</html:div>
+								<html:div class="desc">
+									<html:h6 class="text">Maintenance portal</html:h6>
+								</html:div>
+								<html:div class="logbtn">
+									<Button text="Login" press="onlogin"></Button>
+								</html:div>
+							</html:div>
+							<html:div class="card">
+								<html:div class="card-img2">
+									<html:img src="/webapp/images/shop.png"/>
+								</html:div>
+								<html:div class="desc">
+									<html:h6 class="text">Shopfloor portal</html:h6>
+								</html:div>
+								<html:div class="logbtn">
+									<Button text="Login" press="onshopfloor"></Button>
+								</html:div>
+							</html:div>
+							<html:div class="card">
+								<html:div class="card-img3">
+									<html:img src="/webapp/images/ehsm-logo.jpg"/>
+								</html:div>
+								<html:div class="desc">
+									<html:h6 class="text">EHSM portal</html:h6>
+								</html:div>
+								<html:div class="logbtn">
+									<Button text="Login" press="onehsm"></Button>
+								</html:div>
+							</html:div>
+							<html:div class="card">
+								<html:div class="card-img4">
+									<html:img src="/webapp/images/quality-modified.png"/>
+								</html:div>
+								<html:div class="desc">
+									<html:h6 class="text">Quality portal</html:h6>
+								</html:div>
+								<html:div class="logbtn">
+									<Button text="Login" press="onquality"></Button>
+								</html:div>
+							</html:div>
+						</html:div>
+					</html:div>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

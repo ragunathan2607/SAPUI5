@@ -1,0 +1,23 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="portalnew.controller.EHSMdashboard"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:tnt="sap.tnt">
+	<App>
+		<pages >
+			<Page title="EHSM DASHBOARD" class="ehsmdash">
+				<content>
+					<tnt:ToolHeader>
+						<Button icon="sap-icon://log" type="Transparent" press="onlogout2"></Button>
+						<Button text="Incident Details" type="Transparent" press="onincident"></Button>
+						<Button text="Risk details" type="Transparent" press="onrisk"></Button>
+						<tnt:ToolHeaderUtilitySeparator/>
+						<ToolbarSpacer>
+							<layoutData>
+								<OverflowToolbarLayoutData minWidth="20px" priority="Low"/>
+							</layoutData>
+						</ToolbarSpacer>
+						<Button icon="sap-icon://employee" text="" id="name" type="Transparent" press="onuser"/>
+					</tnt:ToolHeader>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
