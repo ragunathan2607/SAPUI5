@@ -15,7 +15,7 @@
 
 ## 0. Executive summary
 
-Every MOC today holds exactly **one Area and one Unit** (`Z_AREK_KEY` / `Z_UNIT_KEY` plus derived name and ID fields in append `ZMOC_ROOT_S` on `/IAM/D_I_ROOT`). That pair drives five things:
+Every MOC today holds exactly **one Area and one Unit** (`Z_AREK_KEY` / `Z_UNIT_KEY` plus derived name and ID fields in append `ZMOC_ROOT_S` to the extension include `/IAM/INCL_EEW_I_ROOT` of `/IAM/D_I_ROOT`). That pair drives five things:
 
 1. the MOC number `MOC-26-A1-U111-742`,
 2. automatic **Area Manager** (and, for an after-hours Emergency MOC, **Site Shift Manager**) in *People Involved*,

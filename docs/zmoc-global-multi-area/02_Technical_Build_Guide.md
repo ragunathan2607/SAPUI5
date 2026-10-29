@@ -18,7 +18,7 @@ Companion to `01_Impact_Analysis_and_Solution_Design.md`. Section numbers in the
 | --- | --- |
 | Domain `ZMOC_SCOPE_DO` | CHAR 1; fixed values `S` = *Single Area*, `M` = *Multiple Areas*, `G` = *Global* |
 | Data element `ZMOC_SCOPE_DE` | Domain `ZMOC_SCOPE_DO`; labels: short *Scope*, medium *Area Scope*, long *MOC Area Scope*, heading *Area Scope*; Further Characteristics → **Change Document** ✔ |
-| Append `ZMOC_ROOT_S` | New field after `Z_MOC_ASTA_DES`: `Z_MOC_SCOPE TYPE ZMOC_SCOPE_DE` |
+| Append `ZMOC_ROOT_S` (append to the extension include `/IAM/INCL_EEW_I_ROOT`) | New field after `Z_MOC_ASTA_DES`: `Z_MOC_SCOPE TYPE ZMOC_SCOPE_DE` |
 
 ### 1.2 Longer area text
 
@@ -1698,10 +1698,10 @@ CLASS zcl_moc_area_picker_fdr IMPLEMENTATION.
 
       WHEN cl_fpm_event=>gc_event_close_dialog_box.
         IF io_event->mo_event_data IS BOUND.
-          io_event->mo_event_data->get_value( EXPORTING iv_key   = 'DIALOG_BUTTON_ACTION'
+          io_event->mo_event_data->get_value( EXPORTING iv_key   = if_fpm_constants=>gc_dialog_box-dialog_buton_key
                                               IMPORTING ev_value = lv_button ).
         ENDIF.
-        IF lv_button = 'OK' AND mv_editable = abap_true.
+        IF lv_button = if_fpm_constants=>gc_dialog_action_id-ok AND mv_editable = abap_true.
           " FAILED keeps the dialog open (e.g. fewer than two areas)
           apply_selection( IMPORTING et_messages = et_messages
                                      ev_result   = ev_result ).
