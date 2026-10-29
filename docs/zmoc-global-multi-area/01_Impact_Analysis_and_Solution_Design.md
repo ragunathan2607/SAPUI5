@@ -7,6 +7,7 @@
 | Scope | Package ZMOC on top of standard BO `/IAM/ISSUE` and the `/MOC/` FPM change-request UI |
 | Source of analysis | ZMOC extract of 29.10.2026 (`sap-pkg-zmoc-index`, `-vol-01`, `-vol-02`), cross-checked against the `/IAM/` and `/MOC/` extracts of the same day |
 | Companion document | `02_Technical_Build_Guide.md` (DDIC, BOPF, FPM configuration and complete ABAP) |
+| Navigation guides | `03_Step_by_Step_Navigation_Guide.md` (back end: transactions, menu paths, where each piece of code goes) and `04_Front_End_Change_Guide.md` (FPM screens, area popup, Fiori worklist) |
 | Status | Draft for review – version 0.1, 29.10.2026 |
 
 > **Example values.** Area names (*Area 1*, *Area 2*, *Area 3*, *Utilities & Offsites*), codes (`A1`, `U111`) and location IDs (`5000001x`) in this document are illustrations taken from the screenshots. Nothing in the design or the code depends on them: at runtime the areas come from the EHS location master (MOC-relevant areas and their identifier `ZLOC_ID`), and the areas of a Multiple-Area MOC come from the user's selection, stored in node `ZZ_AREA`.

@@ -2,6 +2,7 @@
 ## Technical Build Guide
 
 Companion to `01_Impact_Analysis_and_Solution_Design.md`. Section numbers in the design document's step-by-step plan refer to this guide.
+Where to click and where to paste each block: `03_Step_by_Step_Navigation_Guide.md` (back end) and `04_Front_End_Change_Guide.md` (front end).
 
 * Target: DVJ / client 120, S/4HANA 2023 (SAP_BASIS 758), package `ZMOC`.
 * All signatures used below were checked against the extracts (`/BOBF/IF_FRW_READ`, `/BOBF/IF_FRW_MODIFY`, `/BOBF/IF_TRA_SERVICE_MANAGER`, `/BOBF/IF_FRW_MESSAGE`, `IF_FPM`, `IF_FPM_PARAMETER`, `IF_FPM_GUIBB_LIST`, `CL_FPM_EVENT`, `IF_FPM_CONSTANTS`, `ZMOC_CHK_ADMIN_ROLE`, `ZCL_EHSM_UTILITY=>ZIS_UNIT_AVAILABLE`).
@@ -1553,6 +1554,8 @@ The private method `GET_BT_TEAM_CC` and the variable `lwf_area_key` become obsol
 ---
 
 ## 7. Area popup – feeder and FPM configuration
+
+Click-by-click steps for 7.2–7.5: `04_Front_End_Change_Guide.md`, steps 21–24.
 
 ### 7.1 Class `ZCL_MOC_AREA_PICKER_FDR`
 
