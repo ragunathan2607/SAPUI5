@@ -890,18 +890,30 @@ CLASS zcl_moc_d_scope_data IMPLEMENTATION.
 
     CLEAR: eo_message, et_failed_key.
 
+    " Triggered from ROOT or from ZZ_AREA: always work on the ROOT keys
+    " (with a ZZ_AREA trigger is_ctx-node_key / it_key belong to ZZ_AREA)
+    DATA lt_root_key TYPE /bobf/t_frw_key.
+    IF is_ctx-node_key = /iam/if_i_issue_c=>sc_node-root.
+      lt_root_key = it_key.
+    ELSE.
+      io_read->get_root_key( EXPORTING iv_node       = is_ctx-node_key
+                                       it_key        = it_key
+                             IMPORTING et_target_key = lt_root_key ).
+      SORT lt_root_key BY key.
+      DELETE ADJACENT DUPLICATES FROM lt_root_key COMPARING key.
+    ENDIF.
+
     io_read->retrieve(
       EXPORTING
-        iv_node       = is_ctx-node_key
-        it_key        = it_key
+        iv_node       = /iam/if_i_issue_c=>sc_node-root
+        it_key        = lt_root_key
       IMPORTING
-        et_data       = lt_root
-        et_failed_key = et_failed_key ).
+        et_data       = lt_root ).
 
     io_read->retrieve_by_association(
       EXPORTING
-        iv_node        = is_ctx-node_key
-        it_key         = it_key
+        iv_node        = /iam/if_i_issue_c=>sc_node-root
+        it_key         = lt_root_key
         iv_association = zif_moc_issue_x_c=>sc_association-root-zz_area
         iv_fill_data   = abap_true
       IMPORTING
@@ -909,8 +921,8 @@ CLASS zcl_moc_d_scope_data IMPLEMENTATION.
 
     io_read->retrieve_by_association(
       EXPORTING
-        iv_node        = is_ctx-node_key
-        it_key         = it_key
+        iv_node        = /iam/if_i_issue_c=>sc_node-root
+        it_key         = lt_root_key
         iv_association = /iam/if_i_issue_c=>sc_association-root-party
         iv_fill_data   = abap_true
       IMPORTING
@@ -950,7 +962,7 @@ CLASS zcl_moc_d_scope_data IMPLEMENTATION.
                                                           area_code    = ls_area-area_code
                                                           area_name    = ls_area-area_name )
                 iv_assoc_key       = zif_moc_issue_x_c=>sc_association-root-zz_area
-                iv_source_node_key = is_ctx-node_key
+                iv_source_node_key = /iam/if_i_issue_c=>sc_node-root
                 iv_source_key      = lr_root->key
                 iv_root_key        = lr_root->key ).
               APPEND ls_area TO lt_area.
@@ -1002,7 +1014,7 @@ CLASS zcl_moc_d_scope_data IMPLEMENTATION.
       DATA(lt_changed) = zcl_moc_scope_service=>get_changed_root_fields( is_old = ls_before
                                                                          is_new = lr_root->* ).
       IF lt_changed IS NOT INITIAL.
-        io_modify->update( iv_node           = is_ctx-node_key
+        io_modify->update( iv_node           = /iam/if_i_issue_c=>sc_node-root
                            iv_key            = lr_root->key
                            iv_root_key       = lr_root->key
                            is_data           = lr_root
@@ -1052,12 +1064,25 @@ CLASS zcl_moc_v_scope_lock IMPLEMENTATION.
 
     CLEAR: eo_message, et_failed_key.
 
-    io_read->retrieve( EXPORTING iv_node = is_ctx-node_key
-                                 it_key  = it_key
+    " Triggered from ROOT or from ZZ_AREA: always work on the ROOT keys
+    " (with a ZZ_AREA trigger is_ctx-node_key / it_key belong to ZZ_AREA)
+    DATA lt_root_key TYPE /bobf/t_frw_key.
+    IF is_ctx-node_key = /iam/if_i_issue_c=>sc_node-root.
+      lt_root_key = it_key.
+    ELSE.
+      io_read->get_root_key( EXPORTING iv_node       = is_ctx-node_key
+                                       it_key        = it_key
+                             IMPORTING et_target_key = lt_root_key ).
+      SORT lt_root_key BY key.
+      DELETE ADJACENT DUPLICATES FROM lt_root_key COMPARING key.
+    ENDIF.
+
+    io_read->retrieve( EXPORTING iv_node = /iam/if_i_issue_c=>sc_node-root
+                                 it_key  = lt_root_key
                        IMPORTING et_data = lt_root ).
 
-    io_read->retrieve( EXPORTING iv_node         = is_ctx-node_key
-                                 it_key          = it_key
+    io_read->retrieve( EXPORTING iv_node         = /iam/if_i_issue_c=>sc_node-root
+                                 it_key          = lt_root_key
                                  iv_before_image = abap_true
                        IMPORTING et_data         = lt_root_bi ).
 
@@ -1088,10 +1113,15 @@ CLASS zcl_moc_v_scope_lock IMPLEMENTATION.
           is_msg       = VALUE #( msgty = 'E'
                                   msgid = zcl_moc_scope_service=>gc_msgid
                                   msgno = '034' )
-          iv_node      = is_ctx-node_key
+          iv_node      = /iam/if_i_issue_c=>sc_node-root
           iv_key       = ls_root-key
           iv_attribute = `Z_MOC_SCOPE` ).
-        APPEND VALUE #( key = ls_root-key ) TO et_failed_key.
+        " failed keys must belong to the triggering node
+        IF is_ctx-node_key = /iam/if_i_issue_c=>sc_node-root.
+          APPEND VALUE #( key = ls_root-key ) TO et_failed_key.
+        ELSE.
+          et_failed_key = it_key.
+        ENDIF.
       ENDIF.
 
     ENDLOOP.
