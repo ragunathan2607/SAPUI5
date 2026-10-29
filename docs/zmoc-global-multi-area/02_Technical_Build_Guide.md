@@ -50,7 +50,7 @@ BOBX can generate the combined structure, table type and table in step 2.2 – t
 | 032 | Select at least two areas for a Multiple Areas MOC |
 | 033 | Emergency MOC after office hours: consider adding the Site Shift Manager |
 | 034 | Area Scope and areas can only be changed while the MOC is In Preparation |
-| 035 | MOC number cannot be built: area segment &1 is too long (max. 20 characters) |
+| 035 | MOC number cannot be built: segment &1 is too long (MOC number max. 20 characters) |
 | 036 | Area Manager / Site Shift Manager are not determined automatically for this scope - maintain them in People Involved |
 
 ### 1.5 Variable
@@ -1415,12 +1415,13 @@ The validation already runs for ROOT and PARTY triggers; `lt_root_parties` is fi
            zcl_moc_scope_service=>build_moc_id( iv_year     = lwg_year+2(2)
                                                 iv_segment  = lwv_segment
                                                 iv_sequence = '000' ) ) = abap_false.
+        lwv_msg = lwv_segment.          " IV_PARAMETER_1 is typed SYST-MSGV1, the segment is a string
         IF core_object->mo_fpm IS BOUND.
           core_object->mo_fpm->mo_message_manager->report_t100_message(
             EXPORTING iv_msgid       = zcl_moc_scope_service=>gc_msgid
                       iv_msgno       = '035'
                       iv_severity    = lc_msgty_error
-                      iv_parameter_1 = lwv_segment ).
+                      iv_parameter_1 = lwv_msg ).
         ENDIF.
         RETURN.
       ENDIF.
