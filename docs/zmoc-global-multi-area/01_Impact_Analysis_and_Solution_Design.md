@@ -9,6 +9,8 @@
 | Companion document | `02_Technical_Build_Guide.md` (DDIC, BOPF, FPM configuration and complete ABAP) |
 | Status | Draft for review – version 0.1, 29.10.2026 |
 
+> **Example values.** Area names (*Area 1*, *Area 2*, *Area 3*, *Utilities & Offsites*), codes (`A1`, `U111`) and location IDs (`5000001x`) in this document are illustrations taken from the screenshots. Nothing in the design or the code depends on them: at runtime the areas come from the EHS location master (MOC-relevant areas and their identifier `ZLOC_ID`), and the areas of a Multiple-Area MOC come from the user's selection, stored in node `ZZ_AREA`.
+
 ---
 
 ## 0. Executive summary
@@ -222,7 +224,7 @@ erDiagram
 
 ### 6.3 Screen design
 
-Group **General** of the *Basic Information and Dates* section:
+Mock-ups with example area names. Group **General** of the *Basic Information and Dates* section:
 
 ```
 Single Area (default)
@@ -489,6 +491,8 @@ Each step references the build guide section that contains the exact definition 
 ---
 
 ## 11. Test cases
+
+`A1`, `A2`, `A3` and `U111` stand for any MOC-relevant areas and unit of the test client – replace them with real test data.
 
 | ID | Scenario | Preconditions | Input | Expected result |
 | --- | --- | --- | --- | --- |
