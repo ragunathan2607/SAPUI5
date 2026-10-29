@@ -755,7 +755,10 @@ ENDCLASS.
 
 ### 3.3 ABAP Unit (local test class)
 
+The values below (`A1`, `Test Area A`, …) are **test data only**: a unit test needs fixed input to prove that numbers are rebuilt and names are sorted and joined correctly. The test class runs only in the ABAP Unit framework, never in the MOC application, and reads or writes no MOC or location data. At runtime the areas always come from the EHS location master and from the user's selection.
+
 ```abap
+*"* Test data only - fixed sample values, no access to real MOC / location data
 CLASS ltc_scope_service DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
@@ -820,9 +823,9 @@ CLASS ltc_scope_service IMPLEMENTATION.
   METHOD display_multiple_sorted.
     DATA(ls_display) = zcl_moc_scope_service=>build_display(
       iv_scope = zcl_moc_scope_service=>gc_scope-multiple
-      it_area  = VALUE #( ( loc_root_key = '02' area_name = 'Area 3' )
-                          ( loc_root_key = '01' area_name = 'Area 1' ) ) ).
-    cl_abap_unit_assert=>assert_equals( act = ls_display-area_name exp = 'Area 1, Area 3' ).
+      it_area  = VALUE #( ( loc_root_key = '02' area_name = 'Test Area B' )
+                          ( loc_root_key = '01' area_name = 'Test Area A' ) ) ).
+    cl_abap_unit_assert=>assert_equals( act = ls_display-area_name exp = 'Test Area A, Test Area B' ).
     cl_abap_unit_assert=>assert_equals( act = ls_display-unit_name exp = 'N/A' ).
   ENDMETHOD.
 
@@ -1124,22 +1127,18 @@ In `ipo_zenh_moc_updt_root_zflds1~execute`, first statement inside `LOOP AT lwt_
 
 ### 5.2 `ZENH_MOC_ROOT_ADD_FLS_VAL` – root form (UI)
 
-**a) Local class – two attributes** (they live as long as the feeder instance, because the enhancement object is kept in `%_ZENH_MOC_ROOT_ADD_FLS_VAL`):
+**a) Two enhancement attributes.** Add them on the *Attributes* tab of the class enhancement (SE24 → `/MOC/CL_UIFDR_ROOT_OBJ_INF_FRM` → *Class → Enhance* → `ZENH_MOC_ROOT_ADD_FLS_VAL`) – the same way `ZENH_MOC_FLDS_VISIB_VALD` added `GV_OLD_CLOSURE_DATE`. They belong to the feeder instance, so they keep their value between roundtrips and are shared by the three post-exits, which read them as `core_object->…`. Do **not** add attributes to the generated local class `LCL_ZENH_MOC_ROOT_ADD_FLS_VAL`; the framework regenerates its definition.
+
+| Attribute | Level | Visibility | Typing |
+| --- | --- | --- | --- |
+| `ZZ_MOC_ISSUE_KEY` | Instance attribute | Private | `TYPE /BOBF/CONF_KEY` |
+| `ZZ_MOC_AREA_EDITABLE` | Instance attribute | Private | `TYPE ABAP_BOOL` |
+
+After saving, the framework shows them in `ENHANCEMENT 1` of the enhancement include:
 
 ```abap
-CLASS lcl_zenh_moc_root_add_fls_val DEFINITION.
-  PUBLIC SECTION.
-    CLASS-DATA obj TYPE REF TO lcl_zenh_moc_root_add_fls_val. "#EC NEEDED
-    DATA core_object TYPE REF TO /moc/cl_uifdr_root_obj_inf_frm . "#EC NEEDED
-*   <BOI> CRQ<new>
-    DATA mv_issue_key         TYPE /bobf/conf_key.
-    DATA mv_area_sel_editable TYPE abap_bool.
-*   <EOI>
- INTERFACES  IPO_ZENH_MOC_ROOT_ADD_FLS_VAL.
-    METHODS:
-      constructor IMPORTING core_object
-                              TYPE REF TO /moc/cl_uifdr_root_obj_inf_frm OPTIONAL.
-ENDCLASS.
+  data ZZ_MOC_ISSUE_KEY type /BOBF/CONF_KEY .
+  data ZZ_MOC_AREA_EDITABLE type ABAP_BOOL .
 ```
 
 **b) `get_definition` – two actions** (after the `ZMOC_STYPE` action):
@@ -1179,7 +1178,7 @@ ENDCLASS.
         ENDIF.
         ASSIGN COMPONENT 'KEY' OF STRUCTURE <lfs_scope_data> TO FIELD-SYMBOL(<lfs_scope_key>).
         IF <lfs_scope_key> IS ASSIGNED.
-          mv_issue_key = <lfs_scope_key>.
+          core_object->zz_moc_issue_key = <lfs_scope_key>.
         ENDIF.
         ASSIGN COMPONENT 'LCYCLE_CD' OF STRUCTURE <lfs_scope_data> TO FIELD-SYMBOL(<lfs_scope_lcycle>).
         IF <lfs_scope_lcycle> IS ASSIGNED.
@@ -1188,8 +1187,8 @@ ENDCLASS.
         ENDIF.
       ENDIF.
 
-      mv_area_sel_editable = xsdbool( iv_edit_mode = if_fpm_constants=>gc_edit_mode-edit
-                                      AND lwv_locked = abap_false ).
+      core_object->zz_moc_area_editable = xsdbool( iv_edit_mode = if_fpm_constants=>gc_edit_mode-edit
+                                                   AND lwv_locked = abap_false ).
 *     <EOI>
 ```
 
@@ -1247,7 +1246,7 @@ by
                                          ELSE cl_wd_uielement=>e_visible-none ).
         <lfs_area_sel>-enabled = abap_true.            " display mode opens the list read-only
         " If TEXT is not part of FPMGB_S_ACTIONUSAGE in your release, keep a static label 'Areas...'
-        <lfs_area_sel>-text    = COND #( WHEN mv_area_sel_editable = abap_true
+        <lfs_area_sel>-text    = COND #( WHEN core_object->zz_moc_area_editable = abap_true
                                          THEN `Select Areas...` ELSE `View Areas` ).
         ev_action_usage_changed = abap_true.
       ENDLOOP.
@@ -1273,19 +1272,21 @@ by
 *& CRQ<new>: open the area selection dialog of a Multiple-Area MOC
     IF core_object->ms_uibb_key-config_id <> '/MOC/F_ISS_ROOT_OBJECT_INFO'
        OR io_event->mv_event_id <> 'ZAREA_SEL'
-       OR mv_issue_key IS INITIAL.
+       OR core_object->zz_moc_issue_key IS INITIAL.
       RETURN.
     ENDIF.
 
     DATA(lo_event_data) = CAST if_fpm_parameter( NEW cl_fpm_parameter( ) ).
     lo_event_data->set_value( iv_key   = zcl_moc_area_picker_fdr=>gc_par_issue_key
-                              iv_value = mv_issue_key ).
+                              iv_value = core_object->zz_moc_issue_key ).
     lo_event_data->set_value( iv_key   = zcl_moc_area_picker_fdr=>gc_par_editable
-                              iv_value = mv_area_sel_editable ).
+                              iv_value = core_object->zz_moc_area_editable ).
 
+    " Same pattern as the Switch Action dialog (ZENH_MOC_ACT_TBL_COL_HIDE)
     cl_fpm_factory=>get_instance( )->open_dialog_box(
-      iv_dialog_box_id = zcl_moc_area_picker_fdr=>gc_dialog_id
-      io_event_data    = lo_event_data ).
+      iv_dialog_box_id         = zcl_moc_area_picker_fdr=>gc_dialog_id
+      is_dialog_box_properties = VALUE #( width = 680 height = 520 )
+      io_event_data            = lo_event_data ).
   ENDMETHOD.
 ```
 
