@@ -264,8 +264,8 @@ Create the classes in SE24 or in ADT:
 **Do:**
 1. Description `MOC Area Scope rules`, public, final.
 2. Source code: BG §3.1 (definition) followed by BG §3.2 (implementation) → Activate.
-3. Test class: SE24 *Goto → Local Test Classes* (ADT: tab *Test Classes*) → paste BG §3.3 → Activate.
-4. Run the tests: SE24 *Class → Unit Test* (ADT: Ctrl+Shift+F10).
+3. Test class: in the source-code-based editor of SE24 the button *Local Test Classes* (ADT: tab *Test Classes*) → paste BG §3.3 → Activate.
+4. Run the tests with Ctrl+Shift+F10 (same shortcut in SE24, SE80 and ADT).
 
 **Check:** all tests green; ATC (ADT Ctrl+Shift+F2, or SE80 → right-click the class → *Check → ABAP Test Cockpit (ATC)*) without priority 1 or 2 findings.
 

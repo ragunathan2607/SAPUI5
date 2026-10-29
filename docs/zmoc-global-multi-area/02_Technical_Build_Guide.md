@@ -1245,7 +1245,7 @@ by
                                          THEN cl_wd_uielement=>e_visible-visible
                                          ELSE cl_wd_uielement=>e_visible-none ).
         <lfs_area_sel>-enabled = abap_true.            " display mode opens the list read-only
-        " If TEXT is not part of FPMGB_S_ACTIONUSAGE in your release, keep a static label 'Areas...'
+        " Leave the button text empty in the form configuration, so this text is shown
         <lfs_area_sel>-text    = COND #( WHEN core_object->zz_moc_area_editable = abap_true
                                          THEN `Select Areas...` ELSE `View Areas` ).
         ev_action_usage_changed = abap_true.
