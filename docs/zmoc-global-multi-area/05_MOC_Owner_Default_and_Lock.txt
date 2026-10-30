@@ -424,29 +424,39 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
 
   METHOD /bobf/if_frw_validation~execute.
 
+    TYPES: BEGIN OF lty_saved,
+             db_key          TYPE /bobf/conf_key,
+             parent_key      TYPE /bobf/conf_key,
+             party_role_code TYPE /iam/party_role_cd,
+             bupa_uuid       TYPE /iam/bupa_uuid,
+           END OF lty_saved.
     DATA lt_now      TYPE /iam/t_i_party.
-    DATA lt_before   TYPE /iam/t_i_party.
+    DATA lt_before   TYPE STANDARD TABLE OF lty_saved WITH EMPTY KEY.
     DATA lt_party    TYPE /iam/t_i_party.
     DATA lt_root_key TYPE /bobf/t_frw_key.
 
     CLEAR: eo_message, et_failed_key.
 
-    " Current data (empty for deleted rows) and last saved data
+    " Current data (empty for deleted rows)
     io_read->retrieve( EXPORTING iv_node = /iam/if_i_issue_c=>sc_node-party
                                  it_key  = it_key
                        IMPORTING et_data = lt_now ).
-    io_read->retrieve( EXPORTING iv_node         = /iam/if_i_issue_c=>sc_node-party
-                                 it_key          = it_key
-                                 iv_before_image = abap_true
-                       IMPORTING et_data         = lt_before ).
 
+    " Last saved data from the database. (The BOPF before image cannot be
+    " used: it is filled for unsaved MOCs too - see Step 1.)
     " Only saved MOC Owner rows are protected; a new MOC is handled by Step 1/2
-    DELETE lt_before WHERE party_role_code <> zcl_moc_owner_service=>gc_role_owner.
+    SELECT db_key, parent_key, party_role_code, bupa_uuid
+      FROM /iam/d_i_party
+      FOR ALL ENTRIES IN @it_key
+      WHERE db_key          = @it_key-key
+        AND party_role_code = @zcl_moc_owner_service=>gc_role_owner
+      INTO TABLE @lt_before.
     IF lt_before IS INITIAL.
       RETURN.
     ENDIF.
 
-    lt_root_key = VALUE #( FOR ls_b IN lt_before ( key = ls_b-root_key ) ).
+    " Party rows hang directly below ROOT: PARENT_KEY = root key
+    lt_root_key = VALUE #( FOR ls_b IN lt_before ( key = ls_b-parent_key ) ).
     SORT lt_root_key BY key.
     DELETE ADJACENT DUPLICATES FROM lt_root_key COMPARING key.
 
@@ -462,7 +472,7 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
     LOOP AT lt_before INTO DATA(ls_before).
 
       " Unchanged (same person, same role) -> fine
-      READ TABLE lt_now INTO DATA(ls_now) WITH KEY key = ls_before-key.
+      READ TABLE lt_now INTO DATA(ls_now) WITH KEY key = ls_before-db_key.
       IF sy-subrc = 0
          AND ls_now-bupa_uuid       = ls_before-bupa_uuid
          AND ls_now-party_role_code = ls_before-party_role_code.
@@ -472,7 +482,7 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
       " Changed or removed: admin or Area Manager of this MOC?
       DATA(lt_am_partner) = VALUE bu_partner_t(
         FOR ls_p IN lt_party
-        WHERE ( root_key = ls_before-root_key
+        WHERE ( parent_key = ls_before-parent_key
             AND party_role_code = zcl_moc_owner_service=>gc_role_area_manager )
         ( ls_p-partner_id ) ).
 
@@ -488,8 +498,8 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
                            msgid = zcl_moc_owner_service=>gc_msgid
                            msgno = '037' )
         iv_node = /iam/if_i_issue_c=>sc_node-party
-        iv_key  = ls_before-key ).
-      APPEND VALUE #( key = ls_before-key ) TO et_failed_key.
+        iv_key  = ls_before-db_key ).
+      APPEND VALUE #( key = ls_before-db_key ) TO et_failed_key.
 
       CLEAR ls_now.
     ENDLOOP.
