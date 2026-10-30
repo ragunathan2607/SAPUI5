@@ -480,11 +480,14 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
       ENDIF.
 
       " Changed or removed: admin or Area Manager of this MOC?
-      DATA(lt_am_partner) = VALUE bu_partner_t(
-        FOR ls_p IN lt_party
-        WHERE ( parent_key = ls_before-parent_key
-            AND party_role_code = zcl_moc_owner_service=>gc_role_area_manager )
-        ( ls_p-partner_id ) ).
+      " (BU_PARTNER_T has a structured row type -> fill it with APPEND)
+      DATA lt_am_partner TYPE bu_partner_t.
+      CLEAR lt_am_partner.
+      LOOP AT lt_party INTO DATA(ls_p)
+           WHERE parent_key      = ls_before-parent_key
+             AND party_role_code = zcl_moc_owner_service=>gc_role_area_manager.
+        APPEND ls_p-partner_id TO lt_am_partner.
+      ENDLOOP.
 
       IF zcl_moc_owner_service=>is_owner_edit_allowed( lt_am_partner ) = abap_true.
         CONTINUE.
