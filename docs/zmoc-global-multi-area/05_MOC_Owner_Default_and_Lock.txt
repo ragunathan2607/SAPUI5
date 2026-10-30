@@ -152,6 +152,7 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
     DATA lt_root     TYPE /iam/t_i_root.
     DATA lt_root_bi  TYPE /iam/t_i_root.
     DATA lt_root_key TYPE /bobf/t_frw_key.
+    DATA ls_ini      TYPE /iam/s_i_party.
 
     CLEAR: eo_message, et_failed_key.
 
@@ -204,10 +205,22 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      READ TABLE lt_party INTO DATA(ls_ini)
-           WITH KEY parent_key      = ls_root-key
-                    party_role_code = zcl_moc_owner_service=>gc_role_initiator.
-      IF sy-subrc <> 0 OR ls_ini-bupa_uuid IS INITIAL.
+      " Initiator = 'Reported By' on the header (ROOT-INITIATOR_ID).
+      " Taken from the root: the Initiator row may not be synchronised yet.
+      CLEAR ls_ini.
+      IF ls_root-initiator_id IS NOT INITIAL.
+        ls_ini-partner_id = ls_root-initiator_id.
+        /iam/cl_moc_bupa_adapter=>get_instance( )->get_bupa_guid_by_id(
+          EXPORTING iv_businesspartner      = ls_root-initiator_id
+          IMPORTING ev_businesspartner_guid = ls_ini-bupa_uuid ).
+      ENDIF.
+      " Fallback: the Initiator row
+      IF ls_ini-bupa_uuid IS INITIAL.
+        READ TABLE lt_party INTO ls_ini
+             WITH KEY parent_key      = ls_root-key
+                      party_role_code = zcl_moc_owner_service=>gc_role_initiator.
+      ENDIF.
+      IF ls_ini-bupa_uuid IS INITIAL.
         CONTINUE.
       ENDIF.
 
@@ -260,7 +273,8 @@ ENDCLASS.
    * Name `ZZ_DEFAULT_MOC_OWNER`, description *MOC Owner = Initiator (new MOC)*
    * Class `ZCL_MOC_D_DEFAULT_OWNER`
    * Category *Derive dependent data immediately after modification*
-3. Tab **Trigger Conditions**: `PARTY` – **Create**, **Update**.
+3. Tab **Trigger Conditions**: `PARTY` – **Create**, **Update**; `ROOT~INITIATOR_PARTY` – **Create**, **Update** (so a change of *Reported By* on the header also starts the determination).
+   Tab **Determination Dependency**: leave empty (standard determinations are not offered there; do not tick `ZZ_SET_SCOPE_DATA`).
 4. Tab **Evaluation Timepoints**: *After Modify*.
 5. Tab **Request Nodes** (if shown): `PARTY`, `ROOT`.
 6. Check → Save (package `ZMOC`, same transport as `ZMOC_ISSUE_ENH`) → Activate. Then **Generate constants interface** again.
