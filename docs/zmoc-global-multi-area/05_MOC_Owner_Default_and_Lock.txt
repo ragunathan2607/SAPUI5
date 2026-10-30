@@ -150,7 +150,6 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
     DATA lt_changed  TYPE /iam/t_i_party.
     DATA lt_party    TYPE /iam/t_i_party.
     DATA lt_root     TYPE /iam/t_i_root.
-    DATA lt_root_bi  TYPE /iam/t_i_root.
     DATA lt_root_key TYPE /bobf/t_frw_key.
     DATA ls_ini      TYPE /iam/s_i_party.
 
@@ -178,11 +177,12 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
                                  it_key  = lt_root_key
                        IMPORTING et_data = lt_root ).
 
-    " Before image exists only for MOCs that were saved already
-    io_read->retrieve( EXPORTING iv_node         = /iam/if_i_issue_c=>sc_node-root
-                                 it_key          = lt_root_key
-                                 iv_before_image = abap_true
-                       IMPORTING et_data         = lt_root_bi ).
+    " MOCs that were saved already have a record in the database
+    " (the BOPF before image is not usable here: it is filled for new MOCs too)
+    SELECT db_key FROM /iam/d_i_root
+      FOR ALL ENTRIES IN @lt_root_key
+      WHERE db_key = @lt_root_key-key
+      INTO TABLE @DATA(lt_saved).
 
     io_read->retrieve_by_association(
       EXPORTING
@@ -201,7 +201,7 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
       ENDIF.
 
       " R2: only until the first save
-      IF line_exists( lt_root_bi[ key = ls_root-key ] ).
+      IF line_exists( lt_saved[ db_key = ls_root-key ] ).
         CONTINUE.
       ENDIF.
 
