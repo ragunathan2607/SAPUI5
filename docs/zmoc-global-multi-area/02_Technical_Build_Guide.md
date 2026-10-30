@@ -1206,6 +1206,11 @@ After saving, the framework shows them in `ENHANCEMENT 1` of the enhancement inc
         ASSIGN COMPONENT 'Z_MOC_SCOPE' OF STRUCTURE <lfs_scope_data> TO FIELD-SYMBOL(<lfs_scope>).
         IF <lfs_scope> IS ASSIGNED.
           lwv_scope = zcl_moc_scope_service=>normalize_scope( <lfs_scope> ).
+          " New MOC: show 'Single' as selected (blank already means Single)
+          IF <lfs_scope> IS INITIAL.
+            <lfs_scope>     = lwv_scope.
+            ev_data_changed = abap_true.
+          ENDIF.
         ENDIF.
         ASSIGN COMPONENT 'KEY' OF STRUCTURE <lfs_scope_data> TO FIELD-SYMBOL(<lfs_scope_key>).
         IF <lfs_scope_key> IS ASSIGNED.
