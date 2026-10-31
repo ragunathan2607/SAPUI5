@@ -394,7 +394,7 @@ The UI lock does not cover the **Remove** button (FPM enables it for the whole t
 ### 3a. Message `ZMOC_MSG` 037
 
 SE91 → message class `ZMOC_MSG` → number **037**:
-*Only a MOC administrator or the Area Manager can change or remove the MOC Owner*
+*Only MOC Admin or Area Manager can change or remove the MOC Owner* (max. 73 characters in SE91)
 
 ### 3b. Class `ZCL_MOC_V_OWNER_LOCK`
 
