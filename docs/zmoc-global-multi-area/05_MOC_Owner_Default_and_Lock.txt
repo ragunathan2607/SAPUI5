@@ -319,13 +319,13 @@ Because the new block runs first, the existing Z04 / status 07 rule still overri
 *---------------------------------------------------------------------*
     DATA lwt_own_am_partner TYPE bu_partner_t.
     DATA lwv_own_readonly   TYPE abap_bool.
+    DATA lwo_own_struct     TYPE REF TO cl_abap_structdescr.
 
     FIELD-SYMBOLS: <lft_own_data> TYPE STANDARD TABLE,
                    <lfs_own_row>  TYPE any,
                    <lfs_own_role> TYPE any,
                    <lfs_own_bp>   TYPE any,
-                   <lfs_own_r4>   TYPE any,
-                   <lfs_own_rj>   TYPE any.
+                   <lfs_own_prop> TYPE any.
 
     IF core_object->ms_uibb_key-config_id = '/MOC/L_ISS_PARTY_PEOPLE_INVOLVED'.
 
@@ -348,25 +348,36 @@ Because the new block runs first, the existing Z04 / status 07 rule still overri
         lwv_own_readonly = xsdbool(
           zcl_moc_owner_determine=>is_owner_edit_allowed( lwt_own_am_partner ) = abap_false ).
 
-        " 2. Set the read-only properties of the MOC Owner row
-        LOOP AT <lft_own_data> ASSIGNING <lfs_own_row>.
-          UNASSIGN: <lfs_own_role>, <lfs_own_r4>, <lfs_own_rj>.
-          ASSIGN COMPONENT 'PARTY_ROLE_CODE' OF STRUCTURE <lfs_own_row> TO <lfs_own_role>.
-          IF <lfs_own_role> IS NOT ASSIGNED
-             OR <lfs_own_role> <> zcl_moc_owner_determine=>gc_role_owner.
-            CONTINUE.
-          ENDIF.
-          ASSIGN COMPONENT '/BOFU/R4' OF STRUCTURE <lfs_own_row> TO <lfs_own_r4>.
-          ASSIGN COMPONENT '/BOFU/RJ' OF STRUCTURE <lfs_own_row> TO <lfs_own_rj>.
-          IF <lfs_own_r4> IS ASSIGNED AND <lfs_own_r4> <> lwv_own_readonly.
-            <lfs_own_r4>    = lwv_own_readonly.
-            ev_data_changed = abap_true.
-          ENDIF.
-          IF <lfs_own_rj> IS ASSIGNED AND <lfs_own_rj> <> lwv_own_readonly.
-            <lfs_own_rj>    = lwv_own_readonly.
-            ev_data_changed = abap_true.
-          ENDIF.
-        ENDLOOP.
+        " 2. Not authorized: every read-only property (/BOFU/R*) of the
+        "    MOC Owner row = X  -> Role, Person Responsible ... all grey.
+        "    Authorized: leave the standard properties untouched.
+        IF lwv_own_readonly = abap_true.
+          LOOP AT <lft_own_data> ASSIGNING <lfs_own_row>.
+            UNASSIGN <lfs_own_role>.
+            ASSIGN COMPONENT 'PARTY_ROLE_CODE' OF STRUCTURE <lfs_own_row> TO <lfs_own_role>.
+            IF <lfs_own_role> IS NOT ASSIGNED.
+              CONTINUE.
+            ENDIF.
+            IF <lfs_own_role> <> zcl_moc_owner_determine=>gc_role_owner.
+              CONTINUE.
+            ENDIF.
+
+            IF lwo_own_struct IS NOT BOUND.
+              lwo_own_struct ?= cl_abap_typedescr=>describe_by_data( <lfs_own_row> ).
+            ENDIF.
+            LOOP AT lwo_own_struct->components INTO DATA(lws_own_comp)
+                 WHERE name CP '/BOFU/R*'.
+              UNASSIGN <lfs_own_prop>.
+              ASSIGN COMPONENT lws_own_comp-name OF STRUCTURE <lfs_own_row> TO <lfs_own_prop>.
+              IF <lfs_own_prop> IS ASSIGNED.
+                IF <lfs_own_prop> <> abap_true.
+                  <lfs_own_prop>  = abap_true.
+                  ev_data_changed = abap_true.
+                ENDIF.
+              ENDIF.
+            ENDLOOP.
+          ENDLOOP.
+        ENDIF.
 
       ENDIF.
     ENDIF.
