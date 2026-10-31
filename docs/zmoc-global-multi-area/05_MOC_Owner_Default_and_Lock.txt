@@ -20,13 +20,13 @@ Order of work (baby steps): **Step 0 → Step 1 → test → Step 2 → test →
 
 ---
 
-## Step 0 – Helper class `ZCL_MOC_OWNER_SERVICE`
+## Step 0 – Helper class `ZCL_MOC_OWNER_DETERMINE`
 
-SE24 → create class `ZCL_MOC_OWNER_SERVICE`, package `ZMOC`, *Final*, *Public*.
+SE24 → create class `ZCL_MOC_OWNER_DETERMINE`, package `ZMOC`, *Final*, *Public*.
 It is a new class; no existing object is touched.
 
 ```abap
-CLASS zcl_moc_owner_service DEFINITION
+CLASS zcl_moc_owner_determine DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC.
@@ -59,7 +59,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_moc_owner_service IMPLEMENTATION.
+CLASS zcl_moc_owner_determine IMPLEMENTATION.
 
   METHOD is_admin.
     DATA lv_admin TYPE abap_boolean.
@@ -162,8 +162,8 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
 
     " Relevant: the Initiator row, or an Owner row that is still empty.
     " An Owner row with a person was changed by hand -> leave it alone.
-    DELETE lt_changed WHERE NOT ( party_role_code = zcl_moc_owner_service=>gc_role_initiator
-                               OR ( party_role_code = zcl_moc_owner_service=>gc_role_owner
+    DELETE lt_changed WHERE NOT ( party_role_code = zcl_moc_owner_determine=>gc_role_initiator
+                               OR ( party_role_code = zcl_moc_owner_determine=>gc_role_owner
                                     AND bupa_uuid IS INITIAL ) ).
     IF lt_changed IS INITIAL.
       RETURN.
@@ -218,7 +218,7 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
       IF ls_ini-bupa_uuid IS INITIAL.
         READ TABLE lt_party INTO ls_ini
              WITH KEY parent_key      = ls_root-key
-                      party_role_code = zcl_moc_owner_service=>gc_role_initiator.
+                      party_role_code = zcl_moc_owner_determine=>gc_role_initiator.
       ENDIF.
       IF ls_ini-bupa_uuid IS INITIAL.
         CONTINUE.
@@ -226,7 +226,7 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
 
       READ TABLE lt_party INTO DATA(ls_own)
            WITH KEY parent_key      = ls_root-key
-                    party_role_code = zcl_moc_owner_service=>gc_role_owner.
+                    party_role_code = zcl_moc_owner_determine=>gc_role_owner.
       IF sy-subrc = 0.
 
         " Write only a real change (no endless determination loop)
@@ -247,7 +247,7 @@ CLASS zcl_moc_d_default_owner IMPLEMENTATION.
         " No Owner row yet: create it
         io_modify->create(
           iv_node            = /iam/if_i_issue_c=>sc_node-party
-          is_data            = NEW /iam/s_i_party( party_role_code = zcl_moc_owner_service=>gc_role_owner
+          is_data            = NEW /iam/s_i_party( party_role_code = zcl_moc_owner_determine=>gc_role_owner
                                                    bupa_uuid       = ls_ini-bupa_uuid
                                                    partner_id      = ls_ini-partner_id
                                                    origin_cd       = /iam/if_appl_c=>sc_prtnr_origin-default )
@@ -339,21 +339,21 @@ Because the new block runs first, the existing Z04 / status 07 rule still overri
           ASSIGN COMPONENT 'PARTY_ROLE_CODE' OF STRUCTURE <lfs_own_row> TO <lfs_own_role>.
           ASSIGN COMPONENT 'PARTNER_ID'      OF STRUCTURE <lfs_own_row> TO <lfs_own_bp>.
           IF <lfs_own_role> IS ASSIGNED AND <lfs_own_bp> IS ASSIGNED
-             AND <lfs_own_role> = zcl_moc_owner_service=>gc_role_area_manager
+             AND <lfs_own_role> = zcl_moc_owner_determine=>gc_role_area_manager
              AND <lfs_own_bp> IS NOT INITIAL.
             APPEND <lfs_own_bp> TO lwt_own_am_partner.
           ENDIF.
         ENDLOOP.
 
         lwv_own_readonly = xsdbool(
-          zcl_moc_owner_service=>is_owner_edit_allowed( lwt_own_am_partner ) = abap_false ).
+          zcl_moc_owner_determine=>is_owner_edit_allowed( lwt_own_am_partner ) = abap_false ).
 
         " 2. Set the read-only properties of the MOC Owner row
         LOOP AT <lft_own_data> ASSIGNING <lfs_own_row>.
           UNASSIGN: <lfs_own_role>, <lfs_own_r4>, <lfs_own_rj>.
           ASSIGN COMPONENT 'PARTY_ROLE_CODE' OF STRUCTURE <lfs_own_row> TO <lfs_own_role>.
           IF <lfs_own_role> IS NOT ASSIGNED
-             OR <lfs_own_role> <> zcl_moc_owner_service=>gc_role_owner.
+             OR <lfs_own_role> <> zcl_moc_owner_determine=>gc_role_owner.
             CONTINUE.
           ENDIF.
           ASSIGN COMPONENT '/BOFU/R4' OF STRUCTURE <lfs_own_row> TO <lfs_own_r4>.
@@ -449,7 +449,7 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
       FROM /iam/d_i_party
       FOR ALL ENTRIES IN @it_key
       WHERE db_key          = @it_key-key
-        AND party_role_code = @zcl_moc_owner_service=>gc_role_owner
+        AND party_role_code = @zcl_moc_owner_determine=>gc_role_owner
       INTO TABLE @lt_before.
     IF lt_before IS INITIAL.
       RETURN.
@@ -485,11 +485,11 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
       CLEAR lt_am_partner.
       LOOP AT lt_party INTO DATA(ls_p)
            WHERE parent_key      = ls_before-parent_key
-             AND party_role_code = zcl_moc_owner_service=>gc_role_area_manager.
+             AND party_role_code = zcl_moc_owner_determine=>gc_role_area_manager.
         APPEND ls_p-partner_id TO lt_am_partner.
       ENDLOOP.
 
-      IF zcl_moc_owner_service=>is_owner_edit_allowed( lt_am_partner ) = abap_true.
+      IF zcl_moc_owner_determine=>is_owner_edit_allowed( lt_am_partner ) = abap_true.
         CONTINUE.
       ENDIF.
 
@@ -498,7 +498,7 @@ CLASS zcl_moc_v_owner_lock IMPLEMENTATION.
       ENDIF.
       eo_message->add_message(
         is_msg  = VALUE #( msgty = 'E'
-                           msgid = zcl_moc_owner_service=>gc_msgid
+                           msgid = zcl_moc_owner_determine=>gc_msgid
                            msgno = '037' )
         iv_node = /iam/if_i_issue_c=>sc_node-party
         iv_key  = ls_before-db_key ).
@@ -537,7 +537,7 @@ ENDCLASS.
 
 | Object | Type | New / changed |
 |--------|------|---------------|
-| `ZCL_MOC_OWNER_SERVICE` | Class | new |
+| `ZCL_MOC_OWNER_DETERMINE` | Class | new |
 | `ZCL_MOC_D_DEFAULT_OWNER` | Class | new |
 | `ZCL_MOC_V_OWNER_LOCK` | Class | new |
 | `ZMOC_ISSUE_ENH` | BOPF enhancement | changed (+ determination, + validation on PARTY) |
