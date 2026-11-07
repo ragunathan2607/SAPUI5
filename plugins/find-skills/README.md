@@ -12,7 +12,7 @@ offers to install a matching skill with `npx skills add <owner/repo@skill>`.
 
 ```
 /plugin marketplace add ragunathan2607/SAPUI5
-/plugin install find-skills@sapui5-plugins
+/plugin install find-skills@ragunathan-plugins
 ```
 
 Inside this repository it is enabled automatically through `.claude/settings.json`.

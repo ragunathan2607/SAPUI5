@@ -1,9 +1,9 @@
 {
-  "name": "sapui5-plugins",
+  "name": "ragunathan-plugins",
   "owner": {
     "name": "ragunathan2607"
   },
-  "description": "Claude Code plugins for the SAPUI5 project.",
+  "description": "Claude Code plugins by ragunathan2607.",
   "plugins": [
     {
       "name": "find-skills",

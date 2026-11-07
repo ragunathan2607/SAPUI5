@@ -1,6 +1,6 @@
 {
   "extraKnownMarketplaces": {
-    "sapui5-plugins": {
+    "ragunathan-plugins": {
       "source": {
         "source": "github",
         "repo": "ragunathan2607/SAPUI5"
@@ -8,6 +8,6 @@
     }
   },
   "enabledPlugins": {
-    "find-skills@sapui5-plugins": true
+    "find-skills@ragunathan-plugins": true
   }
 }
