@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "sapui5-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "ragunathan2607/SAPUI5"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "find-skills@sapui5-plugins": true
+  }
+}

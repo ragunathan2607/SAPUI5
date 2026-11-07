@@ -1,0 +1,14 @@
+{
+  "name": "sapui5-plugins",
+  "owner": {
+    "name": "ragunathan2607"
+  },
+  "description": "Claude Code plugins for the SAPUI5 project.",
+  "plugins": [
+    {
+      "name": "find-skills",
+      "source": "./plugins/find-skills",
+      "description": "Discover and install agent skills from the open skills ecosystem (skills.sh)."
+    }
+  ]
+}
