@@ -8,6 +8,7 @@
     }
   },
   "enabledPlugins": {
-    "find-skills@ragunathan-plugins": true
+    "find-skills@ragunathan-plugins": true,
+    "convert-documents-to-markdown@ragunathan-plugins": true
   }
 }

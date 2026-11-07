@@ -1,0 +1,11 @@
+{
+  "name": "convert-documents-to-markdown",
+  "version": "1.0.0",
+  "description": "Convert Word, Excel, PowerPoint, OpenDocument, RTF, EPUB, CSV and PDF files to Markdown with the anydoc CLI.",
+  "author": {
+    "name": "firecrawl"
+  },
+  "homepage": "https://github.com/firecrawl/anydoc",
+  "license": "MIT",
+  "keywords": ["documents", "markdown", "pdf", "docx", "xlsx"]
+}
