@@ -232,15 +232,41 @@ Types are checked against your system: `ZMOC_ACT_CMT_LOG-ZACT_ID` and `/IAM/D_AC
 
 ## Step 6 – Add the new views to the OData project (SEGW)
 
-1. **SEGW** → **Open Project** → `ZEHS_MOC_MANCHGREQ` → switch to **Change** mode (pencil).
-2. In the tree right-click **Data Model** → **Reference** → **Data Source**.
-3. Wizard:
-   * Type: **CDS Business Entity**, CDS name: **`ZMOC_I_CHGMGMTREQAREA`** → **Next** → no associations needed → **Finish**.
-4. Repeat step 2–3 for **`C_CHGMGMTACTYWORKLIST`**. On the associations screen tick (if offered) the text/value-help associations for **activity status** and **activity type** – they give the texts. → **Finish**.
-5. The tree now shows the new entries under **Data Source References → Exposures via SADL**.
-6. Press **Generate Runtime Objects** (red/white wheel icon). Keep the proposed class names (the existing `ZCL_ZEHS_MOC_MANCHGREQ_*`) → OK → transport.
-   * Your code in `…_DPC_EXT` and `…_MPC_EXT` is **not** overwritten – only the base classes are regenerated.
-7. If SEGW reports a name clash for an entity type, rename the new one in the dialog (e.g. `ZMOC_ChgMgmtReqArea`) and generate again.
+The project already references `C_ChgMgmtReqWorklist`, so *Reference → Data Source* stays greyed out. New views are added as **associations of the worklist** and ticked in the exposure screen.
+
+**6a. Associations in the worklist extension (Eclipse)** – `ZMOC_C_CHGMGMTREQWORKLIST`:
+
+```cds
+@AbapCatalog.sqlViewAppendName: 'ZMOC_EX_3'
+@EndUserText.label: 'ZMOC_C_ChgMgmtReqWorklist'
+extend view C_ChgMgmtReqWorklist with ZMOC_C_ChgMgmtReqWorklist
+  association [0..*] to ZMOC_I_ChgMgmtReqArea as _ZZArea
+    on $projection.ChgMgmtReqUUID = _ZZArea.ChgMgmtReqUUID
+  association [0..*] to C_ChgMgmtActyWorklist as _ZZActivity
+    on $projection.ChgMgmtReqUUID = _ZZActivity.ChgMgmtReqUUID
+{
+    z_area_name,z_unit_name,z_moc_asta_des,z_moc_types,z_moc_act_sta,
+    z_moc_scope,
+    cast( case z_moc_scope
+            when 'M' then 'Multiple'
+            when 'G' then 'Global'
+            else          'Single'
+          end as abap.char( 10 ) ) as z_moc_scope_txt,
+    _ZZArea,
+    _ZZActivity
+}
+```
+
+Ctrl+S → Ctrl+F3. Check: `C_CHGMGMTREQWORKLIST` → F8 → right-click a row → *Follow Association* lists `_ZZArea` and `_ZZActivity`.
+
+**6b. Tick them (SEGW)**
+
+1. `/IWFND/CACHE_CLEANUP` and `/IWBEP/CACHE_CLEANUP` (so SEGW reads the new view).
+2. **SEGW** → `ZEHS_MOC_MANCHGREQ` → **Ctrl+F1** (status bar *Edit mode*).
+3. *Data Model → Data Source References → Exposures via SADL* → right-click **CDS-Entity Exposures** → **Display** (in edit mode this screen is editable).
+4. Column **Selected**: tick **`_ZZArea`** + `ZMOC_I_ChgMgmtReqArea` and **`_ZZActivity`** + `C_ChgMgmtActyWorklist`. Expand `C_ChgMgmtActyWorklist` and tick its text associations for status and type (e.g. `_ChgMgmtActyStatusText`, `_ChgMgmtActyTypeText`).
+   (Button *Add CDS-Entity* on the same screen can add a view that is not an association.)
+5. **Save** → **Generate Runtime Objects** → keep the class names → transport.
 
 ---
 
