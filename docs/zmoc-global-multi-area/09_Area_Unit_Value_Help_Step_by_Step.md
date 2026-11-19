@@ -23,6 +23,7 @@ For: ZMOC developer, new to CDS. System DVJ, client 120, package `ZMOC`, one wor
 | 1 | New CDS value help `ZMOC_I_AREAVH` | Eclipse |
 | 2 | New CDS value help `ZMOC_I_UNITVH` (units per area) | Eclipse |
 | 3 | Connect the filter fields to the value helps (`ZMOC_C_CHGMGMTREQWORKLIST_MDE`) | Eclipse |
+| 3b | Area filter also finds Multiple-Area MOCs (filter exit `ZCL_MOC_FLT_EXIT_AREA`) | SE24, Eclipse |
 | 4 | Add the value helps to the OData project | SEGW |
 | 5 | Clear caches | SAP GUI, browser |
 | 6 | Test | Fiori app |
@@ -165,6 +166,109 @@ If the activation says the annotation is **not allowed in a metadata extension**
 
 ---
 
+## Step 3b – Area filter also finds Multiple-Area MOCs (filter exit)
+
+**Problem:** a Multiple-Area MOC stores all its area names in one text (`z_area_name` = "Area 1, Area 3", or "… (+n more)" when the names do not fit into 255 characters). Picking *Area 1* filters with *equal to* → such MOCs are not found. *Contains* is not reliable either ("Area 1" also matches "Area 10"; names hidden in "+n more" are missed).
+
+**Solution:** a SAP filter exit (same technique SAP uses for the Status filter, `CL_MOC_FLT_EXIT_STATUS`). When the user filters *Area(s) = Area 1*, the exit reads all MOCs that have Area 1 from the per-area view `ZMOC_I_CHGMGMTREQAREA` and filters on exactly those MOC keys. Result: Single-Area MOCs of Area 1 **and** every Multiple-Area MOC that includes Area 1.
+
+**Prerequisite:** CDS view `ZMOC_I_CHGMGMTREQAREA` is active (guide 07, step 1).
+
+### 3b.1 Class `ZCL_MOC_FLT_EXIT_AREA` (SE24 or Eclipse)
+
+SE24 → `ZCL_MOC_FLT_EXIT_AREA` → **Create** → description *MOC: SADL filter exit for Area* → package `ZMOC` → switch to **Source Code-Based** → Ctrl+A → paste:
+
+```abap
+CLASS zcl_moc_flt_exit_area DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC.
+
+*&---------------------------------------------------------------------*
+*& Description : SADL filter exit for z_area_name (Manage Change Requests)
+*&  'Area(s) = X' returns every MOC that has area X: Single Area,
+*&  Global ('Global') and Multiple-Area MOCs (table ZMOC_D_ISS_AREA)
+*&  - read via CDS ZMOC_I_CHGMGMTREQAREA
+*&---------------------------------------------------------------------*
+
+  PUBLIC SECTION.
+    INTERFACES if_sadl_exit_filter_transform.
+
+ENDCLASS.
+
+
+
+CLASS zcl_moc_flt_exit_area IMPLEMENTATION.
+
+  METHOD if_sadl_exit_filter_transform~map_atom.
+
+    CLEAR ro_condition.
+
+    " Only the area field with 'equal to' (= value picked from the list)
+    IF iv_element <> 'Z_AREA_NAME'
+       OR iv_operator <> if_sadl_exit_filter_transform~co_operator-equals.
+      RAISE EXCEPTION TYPE cx_sadl_exit_filter_not_supp.
+    ENDIF.
+
+    " All MOCs that have this area (one row per MOC and area)
+    SELECT DISTINCT chgmgmtrequuid
+      FROM zmoc_i_chgmgmtreqarea
+      WHERE areaname = @iv_value
+      INTO TABLE @DATA(lt_moc).
+
+    DATA(lo_condfac) = cl_sadl_cond_prov_factory_pub=>create_simple_cond_factory( ).
+
+    " No MOC has this area: keep the original filter (returns no rows)
+    IF lt_moc IS INITIAL.
+      ro_condition = lo_condfac->element( 'Z_AREA_NAME' )->equals( iv_value ).
+      RETURN.
+    ENDIF.
+
+    " MOC key = key 1 OR key 2 OR ...
+    DATA(lo_uuid) = lo_condfac->element( 'CHGMGMTREQUUID' ).
+    LOOP AT lt_moc INTO DATA(ls_moc).
+      IF ro_condition IS NOT BOUND.
+        ro_condition = lo_uuid->equals( ls_moc-chgmgmtrequuid ).
+      ELSE.
+        ro_condition = ro_condition->or( lo_uuid->equals( ls_moc-chgmgmtrequuid ) ).
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+ENDCLASS.
+```
+
+**Check → Activate.** If the check reports a type problem in `equals( ls_moc-chgmgmtrequuid )`, send me the message.
+
+### 3b.2 Attach the exit to the area field (`ZMOC_C_CHGMGMTREQWORKLIST`)
+
+1. Eclipse → **Ctrl+Shift+A** → `ZMOC_C_CHGMGMTREQWORKLIST`.
+2. Put the annotation line directly above `z_area_name` (split the first field line). Result:
+
+```cds
+@AbapCatalog.sqlViewAppendName: 'ZMOC_EX_3'
+@EndUserText.label: 'ZMOC_C_ChgMgmtReqWorklist'
+extend view C_ChgMgmtReqWorklist with ZMOC_C_ChgMgmtReqWorklist
+{
+    @ObjectModel.filter.transformedBy: 'ABAP:ZCL_MOC_FLT_EXIT_AREA'
+    z_area_name,
+    z_unit_name,z_moc_asta_des,z_moc_types,z_moc_act_sta,
+    z_moc_scope,
+    cast( case z_moc_scope
+            when 'M' then 'Multiple'
+            when 'G' then 'Global'
+            else          'Single'
+          end as abap.char( 10 ) ) as z_moc_scope_txt
+}
+```
+
+3. **Ctrl+S → Ctrl+F3.**
+
+**Effect for the user:** pick *Area 1* (one or several areas) from the value help → *Go* → all MOCs with Area 1, including Multiple-Area MOCs with Area 1 among others. Operators other than *equal to* (e.g. *contains*) are not supported for this field any more – the value list is the way to filter.
+
+---
+
 ## Step 4 – Add the value helps to the OData project (SEGW)
 
 The app can only open a value help that is part of its OData service.
@@ -207,7 +311,7 @@ The app can only open a value help that is part of its OData service.
 
 If the field still shows only the free-text search: the saved user variant keeps the old field settings → choose variant *Standard*, or remove and re-add the field via *Adapt Filters*.
 
-**Note for Multiple-Area MOCs:** `z_area_name` holds all area names of such a MOC (e.g. "Area 1, Area 3"). Picking *Area 1* from the list filters with **equal to**, so Multiple-Area MOCs that include Area 1 are not shown. To find them as well, use the operator **contains** in the Area filter (*Define Conditions* tab of the value-help popup → *contains* → *Area 1*). Exact per-area filtering would need the per-area view from guide 07 – tell me if that is required.
+**Multiple-Area MOCs:** with step 3b, picking *Area 1* also returns every Multiple-Area MOC that includes Area 1 (test with a MOC that has Area 1 and Area 3: it must appear for *Area 1* and for *Area 3*).
 
 ---
 
@@ -219,7 +323,10 @@ If the field still shows only the free-text search: the saved user variant keeps
 |---|---|
 | `ZMOC_I_AREAVH` | DDLS (new) |
 | `ZMOC_I_UNITVH` | DDLS (new) |
-| `ZMOC_C_CHGMGMTREQWORKLIST_MDE` (or `ZMOC_C_CHGMGMTREQWORKLIST`, see step 3) | DDLX / DDLS |
+| `ZMOC_C_CHGMGMTREQWORKLIST_MDE` | DDLX |
+| `ZMOC_C_CHGMGMTREQWORKLIST` (filter exit annotation) | DDLS |
+| `ZCL_MOC_FLT_EXIT_AREA` | class (new) |
+| `ZMOC_I_CHGMGMTREQAREA` (if not yet transported with guide 07) | DDLS |
 | `ZEHS_MOC_MANCHGREQ` + generated `ZCL_ZEHS_MOC_MANCHGREQ_MPC` / `_DPC` | SEGW project + classes |
 
 After import: cache clean-up (step 5) once in the target system.
