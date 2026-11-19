@@ -1,5 +1,20 @@
 # Manage Change Requests – Area / Unit value help (list instead of free text), step by step
 
+> **Status 19.11.2026: dropped by the client** (no adaptation project, no change to SAP's standard service `EHS_MOC_MANCHGREQ_SRV`). Steps 1–3b had been built in DVJ and are reverted with section R below. The Area Scope changes (guide 08) stay.
+
+## R – Revert (back to the state before this guide, Area Scope kept)
+
+| R | What | Tool |
+|---|---|---|
+| R1 | Remove the two `@Consumption.valueHelpDefinition` lines from `ZMOC_C_CHGMGMTREQWORKLIST_MDE` | Eclipse |
+| R2 | Remove the `@ObjectModel.filter.transformedBy` line from `ZMOC_C_CHGMGMTREQWORKLIST` | Eclipse |
+| R3 | Delete class `ZCL_MOC_FLT_EXIT_AREA` | SE24 |
+| R4 | Delete CDS `ZMOC_I_UNITVH`, then `ZMOC_I_AREAVH` | Eclipse |
+| R5 | Clear caches, test | SAP GUI, app |
+
+Keep `ZMOC_I_CHGMGMTREQAREA` – it belongs to the Power BI build (guide 07).
+
+
 For: ZMOC developer, new to CDS. System DVJ, client 120, package `ZMOC`, one workbench transport.
 
 ## What changes
