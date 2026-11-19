@@ -24,7 +24,7 @@ For: ZMOC developer, new to CDS. System DVJ, client 120, package `ZMOC`, one wor
 | 2 | New CDS value help `ZMOC_I_UNITVH` (units per area) | Eclipse |
 | 3 | Connect the filter fields to the value helps (`ZMOC_C_CHGMGMTREQWORKLIST_MDE`) | Eclipse |
 | 3b | Area filter also finds Multiple-Area MOCs (filter exit `ZCL_MOC_FLT_EXIT_AREA`) | SE24, Eclipse |
-| 4 | Add the value helps to the OData project | SEGW |
+| 4 | Make the value helps available in the app's service `EHS_MOC_MANCHGREQ_SRV` | Gateway client (+ SEGW / Fiori if needed) |
 | 5 | Clear caches | SAP GUI, browser |
 | 6 | Test | Fiori app |
 | 7 | Transport | SE09 |
@@ -269,16 +269,34 @@ extend view C_ChgMgmtReqWorklist with ZMOC_C_ChgMgmtReqWorklist
 
 ---
 
-## Step 4 – Add the value helps to the OData project (SEGW)
+## Step 4 – Make the value helps available in the app's service
 
-The app can only open a value help that is part of its OData service.
+**Which service:** the Fiori app *Manage Change Requests* calls SAP's **standard** service **`EHS_MOC_MANCHGREQ_SRV`** (see the `$batch` URL in the browser network trace). Your Z project `ZEHS_MOC_MANCHGREQ` (published as `ZEHS_MOC_BIDASHBOARD_SRV`) is only for Power BI – changing it does **not** change the app. The app can only open a value help whose CDS view is part of **its own** service.
 
-1. **SEGW** → open `ZEHS_MOC_MANCHGREQ` → **Change** mode.
-2. Right-click **Data Model** → **Reference** → **Data Source** → type **CDS Business Entity** → `ZMOC_I_AREAVH` → **Next** → **Finish**.
-3. Repeat for `ZMOC_I_UNITVH`.
-4. **Generate Runtime Objects** → keep the class names → OK → transport.
+Steps 1–3b are CDS changes and work for both services. This step only decides how the two value-help views get into the standard service.
 
-(If you are also doing guide 07, add its views in the same session and generate once.)
+### 4a. First check – maybe nothing to do
+
+1. Clear the caches (step 5, points 1–2).
+2. `/IWFND/GW_CLIENT` → GET `/sap/opu/odata/sap/EHS_MOC_MANCHGREQ_SRV/$metadata`
+3. **Ctrl+F** in the response → search `ZMOC_I_AreaVH`.
+
+| Result | Meaning | Next |
+|---|---|---|
+| **Found** (entity set `ZMOC_I_AreaVH` and a `ValueList` annotation for `z_area_name`) | SAP exposes the referenced value helps automatically | step 5 – done |
+| **Not found** | the standard service lists its entities explicitly | choose 4b or 4c – send me the result first |
+
+### 4b. Option (recommended): the app uses your Z service
+
+Your Z service already contains `C_ChgMgmtReqWorklist` and all value helps (built from the same CDS views). Add the two value helps there and point the app to it, without modifying SAP:
+
+1. **SEGW** → project `ZEHS_MOC_MANCHGREQ` → **Change** → right-click **Data Model** → **Reference** → **Data Source** → **CDS Business Entity** → `ZMOC_I_AREAVH` → **Next** → **Finish**. Repeat for `ZMOC_I_UNITVH`.
+2. **Generate Runtime Objects** → keep the class names → transport.
+3. Point the app to the Z service with an **adaptation project** (SAP Business Application Studio / Web IDE → *Adaptation Project* on *Manage Change Requests* → replace OData service `EHS_MOC_MANCHGREQ_SRV` by `ZEHS_MOC_BIDASHBOARD_SRV`) and put the adapted app into the Fiori catalog instead of the standard one. This is a Fiori/UI5 task for the Fiori consultant.
+
+### 4c. Option (not recommended): modify SAP's project
+
+Add the two views to SAP's SEGW project `EHS_MOC_MANCHGREQ` (needs a modification key; re-check after every upgrade in SPAU). Only if the client accepts a modification.
 
 ---
 
@@ -296,9 +314,9 @@ The app can only open a value help that is part of its OData service.
 
 | # | Request URI | Expect |
 |---|---|---|
-| 1 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/ZMOC_I_AreaVH` | list of areas |
-| 2 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/ZMOC_I_UnitVH?$filter=AreaName eq 'Area 1'` | units of Area 1 only (use a real area name) |
-| 3 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/$metadata` | the two new entity sets; in the annotations a `ValueList` for `z_area_name` and `z_unit_name` |
+| 1 | `/sap/opu/odata/sap/EHS_MOC_MANCHGREQ_SRV/ZMOC_I_AreaVH` | list of areas |
+| 2 | `/sap/opu/odata/sap/EHS_MOC_MANCHGREQ_SRV/ZMOC_I_UnitVH?$filter=AreaName eq 'Area 1'` | units of Area 1 only (use a real area name) |
+| 3 | `/sap/opu/odata/sap/EHS_MOC_MANCHGREQ_SRV/$metadata` | the two new entity sets; in the annotations a `ValueList` for `z_area_name` and `z_unit_name` |
 
 **Fiori app *Manage Change Requests*:**
 
@@ -327,6 +345,6 @@ If the field still shows only the free-text search: the saved user variant keeps
 | `ZMOC_C_CHGMGMTREQWORKLIST` (filter exit annotation) | DDLS |
 | `ZCL_MOC_FLT_EXIT_AREA` | class (new) |
 | `ZMOC_I_CHGMGMTREQAREA` (if not yet transported with guide 07) | DDLS |
-| `ZEHS_MOC_MANCHGREQ` + generated `ZCL_ZEHS_MOC_MANCHGREQ_MPC` / `_DPC` | SEGW project + classes |
+| `ZEHS_MOC_MANCHGREQ` + generated `ZCL_ZEHS_MOC_MANCHGREQ_MPC` / `_DPC` (only with option 4b) | SEGW project + classes |
 
 After import: cache clean-up (step 5) once in the target system.
