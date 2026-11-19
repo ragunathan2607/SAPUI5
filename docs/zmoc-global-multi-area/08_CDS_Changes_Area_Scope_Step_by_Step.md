@@ -4,7 +4,12 @@ For: ZMOC developer, first time with CDS. System DVJ, client 120, package `ZMOC`
 
 ## Why these changes are needed
 
-The Area Scope project added the field **`Z_MOC_SCOPE`** (S = Single, M = Multiple, G = Global) to the MOC header and the Multiple-Area table **`ZMOC_D_ISS_AREA`**. The CDS views that feed the **Manage Change Requests** list app and the OData service `ZEHS_MOC_MANCHGREQ_SRV` were never adjusted.
+The Area Scope project added the field **`Z_MOC_SCOPE`** (S = Single, M = Multiple, G = Global) to the MOC header and the Multiple-Area table **`ZMOC_D_ISS_AREA`**. The CDS views were never adjusted. These CDS views feed **two** services:
+
+| Service | Used by | Gets the new fields how |
+|---|---|---|
+| SAP standard **`EHS_MOC_MANCHGREQ_SRV`** | Fiori app *Manage Change Requests* | automatically after the cache clean-up (SADL reads the CDS view) |
+| Your Z service **`ZEHS_MOC_BIDASHBOARD_SRV`** (SEGW project `ZEHS_MOC_MANCHGREQ`) | Power BI | cache clean-up; regenerate the SEGW project if the fields do not appear |
 
 Checked in the DVJ extract of 12.11.2026:
 
@@ -24,7 +29,8 @@ Checked in the DVJ extract of 12.11.2026:
         └─ I_ChgMgmtReqWorklist + extension ZMOC_I_CHGMGMTREQWORKLIST (step 2)
              └─ C_ChgMgmtReqWorklist + extension ZMOC_C_CHGMGMTREQWORKLIST (step 3)
                   └─ annotations ZMOC_C_CHGMGMTREQWORKLIST_MDE            (step 4)
-                       └─ OData ZEHS_MOC_MANCHGREQ_SRV / Fiori list app   (steps 5–6)
+                       └─ OData EHS_MOC_MANCHGREQ_SRV (Fiori app) and
+                          ZEHS_MOC_BIDASHBOARD_SRV (Power BI)            (steps 5–6)
 ```
 
 Each level can only pass on a field that the level below already has. So: step 1 → 2 → 3 → 4, never in another order.
@@ -185,10 +191,9 @@ Meaning: `@UI.lineItem` = column in the result list (position = order), `@UI.sel
 
 ## Step 5 – OData service: regenerate and clear caches
 
-1. **SEGW** → open project `ZEHS_MOC_MANCHGREQ` → **Change** mode → **Generate Runtime Objects** → keep the class names → OK → transport.
-   (Your code in `…_DPC_EXT` / `…_MPC_EXT` stays as it is.)
-2. **`/IWFND/CACHE_CLEANUP`** – tick *Cleanup Cache for all Models* → F8.
-3. **`/IWBEP/CACHE_CLEANUP`** → F8.
+1. **`/IWFND/CACHE_CLEANUP`** – tick *Cleanup Cache for all Models* → F8.
+2. **`/IWBEP/CACHE_CLEANUP`** → F8.
+3. Only for the Power BI service, if `z_moc_scope` is missing in its `$metadata` after 1–2: **SEGW** → project `ZEHS_MOC_MANCHGREQ` → **Change** → **Generate Runtime Objects** → keep the class names → transport. (Never regenerate or change SAP's standard project `EHS_MOC_MANCHGREQ`.)
 
 If you do the Power BI build (guide 07) in the same transport, do its SEGW step first and generate once for both.
 
@@ -200,8 +205,8 @@ If you do the Power BI build (guide 07) in the same transport, do its SEGW step 
 
 | # | Request URI | Expect |
 |---|---|---|
-| 1 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/$metadata` | properties `z_moc_scope`, `z_moc_scope_txt` in `C_ChgMgmtReqWorklistType` |
-| 2 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/C_ChgMgmtReqWorklist?$select=ChgMgmtRequest,z_moc_scope,z_moc_scope_txt,z_area_name&$top=20` | Single / Multiple / Global per MOC |
+| 1 | `/sap/opu/odata/sap/EHS_MOC_MANCHGREQ_SRV/$metadata` (Fiori app service; same test with `ZEHS_MOC_BIDASHBOARD_SRV` for Power BI) | properties `z_moc_scope`, `z_moc_scope_txt` in `C_ChgMgmtReqWorklistType` |
+| 2 | `/sap/opu/odata/sap/EHS_MOC_MANCHGREQ_SRV/C_ChgMgmtReqWorklist?$select=ChgMgmtRequest,z_moc_scope,z_moc_scope_txt,z_area_name&$top=20` | Single / Multiple / Global per MOC |
 | 3 | `…/C_ChgMgmtReqWorklist?$filter=z_moc_scope_txt eq 'Multiple'&$top=20` | only Multiple-Area MOCs |
 
 **Fiori app *Manage Change Requests*:**
@@ -222,9 +227,9 @@ If you do the Power BI build (guide 07) in the same transport, do its SEGW step 
 | `ZMOC_I_CHGMGMTREQWORKLIST` | DDLS |
 | `ZMOC_C_CHGMGMTREQWORKLIST` | DDLS |
 | `ZMOC_C_CHGMGMTREQWORKLIST_MDE` | DDLX |
-| `ZEHS_MOC_MANCHGREQ` + `ZCL_ZEHS_MOC_MANCHGREQ_MPC` / `_DPC` | SEGW project + generated classes |
+| `ZEHS_MOC_MANCHGREQ` + `ZCL_ZEHS_MOC_MANCHGREQ_MPC` / `_DPC` (only if regenerated in step 5.3) | SEGW project + generated classes |
 
-Import order in the target system is handled by the transport. After import run the two cache clean-ups once (step 5.2, 5.3).
+After import run the two cache clean-ups once (step 5.1, 5.2).
 
 ---
 

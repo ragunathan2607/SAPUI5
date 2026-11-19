@@ -3,6 +3,8 @@
 For: ZMOC developer, first time with CDS. System DVJ, client 120, package `ZMOC`, one workbench transport for everything.
 Names checked against the DVJ extract of 12.11.2026 (`ZMOC_D_ISS_AREA`, `/IAM/D_I_ROOT-Z_MOC_SCOPE` = S/M/G, `ZMOC_ACT_CMT_LOG`, `/IAM/D_ACT_ROOT` Z-fields).
 
+**Which service:** Power BI uses **your Z service** = SEGW project `ZEHS_MOC_MANCHGREQ` (backend service `ZEHS_MOC_MANCHGREQ_SRV`), published in Gateway under the name **`ZEHS_MOC_BIDASHBOARD_SRV`** → URL `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/`. It is **not** the service of the Fiori app *Manage Change Requests* (that one is SAP's standard `EHS_MOC_MANCHGREQ_SRV`, see guide 09).
+
 **Order (do not change it):**
 
 | Step | What | Tool |
@@ -259,12 +261,12 @@ Method **GET**, one URL after the other → **Execute**. HTTP status must be **2
 
 | # | Request URI | Expect |
 |---|---|---|
-| 1 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/$metadata` | entity sets `ZMOC_I_ChgMgmtReqArea` and `C_ChgMgmtActyWorklist`; the activity type lists `ChgMgmtActyTemplate`, `RootChgMgmtActyUUID`, `zpreact`, `zpropdat`, `zrisk_id` … |
-| 2 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/ZMOC_I_ChgMgmtReqArea?$top=20` | rows per MOC and area; Multiple-Area MOCs several times |
-| 3 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/C_ChgMgmtActyWorklist?$top=20` | activities with the new fields |
-| 4 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/ChgMgmtReqstartupapprdateTypeSet` | MOCs of **all** statuses with a date |
-| 5 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/ChgMgmtReqMocOwnerTypeSet` | owner names for all MOCs |
-| 6 | `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/C_ChgMgmtReqWorklist?$top=5&$format=json` | unchanged, still works |
+| 1 | `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/$metadata` | entity sets `ZMOC_I_ChgMgmtReqArea` and `C_ChgMgmtActyWorklist`; the activity type lists `ChgMgmtActyTemplate`, `RootChgMgmtActyUUID`, `zpreact`, `zpropdat`, `zrisk_id` … |
+| 2 | `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/ZMOC_I_ChgMgmtReqArea?$top=20` | rows per MOC and area; Multiple-Area MOCs several times |
+| 3 | `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/C_ChgMgmtActyWorklist?$top=20` | activities with the new fields |
+| 4 | `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/ChgMgmtReqstartupapprdateTypeSet` | MOCs of **all** statuses with a date |
+| 5 | `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/ChgMgmtReqMocOwnerTypeSet` | owner names for all MOCs |
+| 6 | `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/C_ChgMgmtReqWorklist?$top=5&$format=json` | unchanged, still works |
 
 Use the entity set names exactly as `$metadata` shows them (if you renamed in step 6.7, use the new name).
 

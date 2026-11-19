@@ -339,7 +339,7 @@ Pre/Post in Power BI (table `Activity`):
 3. **Generate Runtime Objects** (keep the existing class names).
 4. `/IWFND/CACHE_CLEANUP` and `/IWBEP/CACHE_CLEANUP` (also after every CDS change).
 5. Test in `/IWFND/GW_CLIENT`:
-   * `/sap/opu/odata/sap/ZEHS_MOC_MANCHGREQ_SRV/$metadata` – new sets `ZMOC_I_ChgMgmtReqArea`, `C_ChgMgmtActyWorklist`; worklist shows `z_*` fields, activity set shows `ChgMgmtActyTemplate`, `RootChgMgmtActyUUID`, `zpreact`, `zpropdat`, `zrisk_id`, …
+   * `/sap/opu/odata/sap/ZEHS_MOC_BIDASHBOARD_SRV/$metadata` – new sets `ZMOC_I_ChgMgmtReqArea`, `C_ChgMgmtActyWorklist`; worklist shows `z_*` fields, activity set shows `ChgMgmtActyTemplate`, `RootChgMgmtActyUUID`, `zpreact`, `zpropdat`, `zrisk_id`, …
    * `…/ChgMgmtReqstartupapprdateTypeSet` – returns MOCs of all statuses.
 
 One service then feeds the whole dashboard. (Alternatively the activities can stay in `ZEHS_MOC_MANACTY_SRV`, if that service already exposes `C_ChgMgmtActyWorklist` – the CDS extensions appear there automatically after the cache clean-up.)
